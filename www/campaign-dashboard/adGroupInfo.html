@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../dashboard-style-light.css"/>
+    <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="adGroup.js"></script>
+    <meta charset="UTF-8">
+    <title>Ad Platform Campaign-AdGroup Dashboard</title>
+</head>
+<body>
+<h1 class="page-title">Campaign-AdGroup Dashboard</h1>
+
+<div class="main">
+    <div class="main-content">
+	   
+
+        <h2 id="campaign-title"></h2>
+
+        <div class="section">
+            <span class="label">AdGroup ID:</span>
+            <span id="adgroup-id" class="value"></span>
+        </div>
+        <div class="section">
+            <span class="label">AdGroup Name:</span>
+            <span id="adgroup-name" class="value"></span>
+        </div>
+      	
+        <div class="section">
+            <span class="label">Adgroup Status:</span>
+            <span id="adgroup-status" class="value"></span>
+        </div>
+        <div class="section">
+            <span class="label">Adgroup Min Budget:</span>
+            <span id="adgroup-budget-min" class="value"></span><span id="adgroup-minbudget-currency"></span>
+        </div>
+        <div class="section">
+            <span class="label">Adgroup Max Budget:</span>
+            <span id="adgroup-budget-max" class="value"></span><span id="adgroup-maxbudget-currency"></span>
+          
+        </div>
+ 
+                <div class="section">
+            <span class="label">Adgroup Listings Count :</span>
+            <span id="adgroup-listing-count" class="value"></span>
+        </div>
+        
+         <div class="section">
+            <span class="label">Listings InStock Count :</span>
+            <span id="adgroup-instock-count" class="value"></span>
+        </div>
+        
+         <div class="section">
+            <span class="label">Listings OutStock Count :</span>
+            <span id="adgroup-outstock-count" class="value"></span>
+        </div>
+
+        <div class="section">
+            <span class="label">Adgroup Creation Time:</span>
+            <span id="adgroup-creation" class="value"></span>
+        </div>
+        
+         <div class="section">
+            <span class="label">Adgroup Modified Time:</span>
+            <span id="adgroup-modified" class="value"></span>
+        </div>
+        
+
+   
+	
+    </div>
+</div>
+       <div>
+       <span style="padding-RIGHT: 200px; "> Listing-IDS</span><span id="instock"  style="padding-RIGHT: 50px; "> In-Stock</span><span padding-RIGHT: 50px> Banner-Created</span>
+       </div>  
+       
+   <div class="table-content">
+        <table class="table-listing">
+        <tr>
+          <td id =  'listingid'>
+            </td>
+        </tr>
+      </table>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<html>
+<head>
+    <style type="text/css">
+        body{
+            background: #cfcfcf;
+        }
+    </style>
+</head>
+<body>
+<div id="allIframes">
+</div>
+<script type="text/javascript">
+    var mUrls=['http://10.47.4.24/dashboard/db/flap-pla-adserver?panelId=3&fullscreen','http://10.47.4.24/dashboard/db/flap-pla-adserver?panelId=2&fullscreen','http://10.47.4.24/dashboard/db/flap-pla-adserver?panelId=8&fullscreen','http://10.47.4.24/dashboard/db/brand-adserver?panelId=1&fullscreen','http://10.47.4.24/dashboard/db/brand-adserver?panelId=37&fullscreen','http://10.47.4.24/dashboard/db/brand-adserver?panelId=9&fullscreen','http://10.32.201.205:5601/goto/e3dfe514ab56fac89abed0106f883815','http://10.47.4.24/dashboard/db/brand-adserver-desktop?panelId=1&fullscreen','http://10.47.4.24/dashboard/db/brand-adserver-desktop?panelId=2&fullscreen','http://10.32.201.205:5601/goto/7be6805d149ab8a4b8c2730c54270021','http://10.47.4.24/dashboard/db/brand-adserver?panelId=20&fullscreen','http://198.143.129.138:3000/dashboard/db/adserver-metrics-us'];
+    // $(".frameDiv").remove();
+    //  $("#main iframe").remove();
+    var div=document.getElementById("allIframes");
+    console.log("div "+div);
+    for(var i=0;i<mUrls.length;i++)
+    {
+        //div.removeChild('main-content');
+        var mDiv=document.createElement('div');
+        mDiv.width="100%";
+        mDiv.height="27%";
+        mDiv.style.border = "thick solid #2980B9";
+        var iframe = document.createElement('iframe');
+        iframe.frameBorder=0;
+        iframe.width="100%";
+        iframe.height="100%";
+        iframe.id="main-content";
+        iframe.setAttribute("src", mUrls[i]);
+        console.log("iframe"+iframe);
+        mDiv.appendChild(iframe);
+        div.appendChild(mDiv);
+    }
+</script>
+</body>
+</html>

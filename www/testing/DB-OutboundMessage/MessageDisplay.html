@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>CM and Madison Messages</title>
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <style>
+        .page-header{
+        background: #005580 ;
+        border: 2px solid #467813;
+        border-radius: 5px;
+        color: #fff;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        padding: 5px 10px 15px 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+    <div class="page-header">
+        <h2>Last Event from CM and Madison DB</h2>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-sm-2">
+            <label>Campaign Id:</label>
+        </div>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" id="cmp_id_input" placeholder="Enter Campaign Id">
+        </div>
+        <div class="col-sm-1">
+            <input type="submit" id="cmp_id_submit" value="Submit">
+        </div>
+    </div>
+    <br><br><br>
+
+    <div class="section">
+        <label> CM_Status : </label>
+        <span id="cm_status" class="value"></span>
+    </div>
+    <br><br>
+    <div class="section">
+        <label> Madison_Status : </label>
+        <span id="madi_status" class="value"></span>
+    </div>
+    <br><br>
+
+    <div class="section">
+        <label> Message_Id : </label>
+        <span id="message" class="value"></span>
+    </div>
+    <br><br>
+
+    <div class="section">
+        <label> Event_Date : </label>
+        <span id="date" class="value"></span>
+    </div>
+    <br><br>
+
+    <left>
+        <input type="submit" value="CM_Message" id="CM_Button"> <br><br>
+        <right><div class="value" id="CM_msg"></div></right> <br><br>
+        <input type="submit" value="Madison_Message" id="Madi_Button"><br><br>
+        <right><div class="value" id="Madi_msg"></div></right>
+    </left>
+
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#cmp_id_submit').click(function(){
+            var cmpId = $('#cmp_id_input').val();
+
+            $.ajax({
+            url:'http://10.47.3.204/services/CM/'+cmpId,
+            dataType: "json",
+            type: 'GET',
+            crossDomain: true,
+            success: function (cm_message) {
+                 var keys=Object.keys(cm_message);                         //keys of json
+                 var msg_key = cm_message[keys[0]];
+                 var i = 0;
+                 if(msg_key.length == undefined)
+                    {
+                       var msg_key = [msg_key];
+                    }
+                 else
+                    {
+                      while( (msg_key[i]['campaignId']!= cmpId ) && (i < msg_key.length))
+                       {
+                        i++;
+                       }
+                    }
+                                                          //keys of JSON
+                 $("#cm_status").text(msg_key[i]['status']);
+
+                 $("#CM_Button").click(function(){
+                      var msg_string=JSON.stringify(msg_key[i]);      //Stringify the JSON object returned
+                      $("#CM_msg").text(msg_string);
+                    });
+
+                },
+            error: function (request, status, error) {
+                   console.log("error");
+                }
+
+        });
+
+           $.ajax({
+            url:'http://10.47.3.204/services/Madison/'+cmpId,
+            dataType: "json",
+            type: 'GET',
+            crossDomain: true,
+            success: function (madi_message) {
+
+                 var key2 = Object.keys(madi_message);              //keys of json
+                 var msg_key2 = madi_message[key2[0]];              //API returns keys in string type
+                 var msg_key3 = madi_message[key2[1]];
+                 var msg_Obj  = JSON.parse(msg_key2);               //String to Object
+                 var msg_Obj2 = JSON.parse(msg_key3);
+
+                 var i = 0;
+
+                 if(msg_Obj.length == undefined)
+                     {
+                        var msg_Obj = [msg_Obj];
+                      }
+                 else
+                     {
+                   while( (msg_Obj[i]['campaign_id'] != cmpId ) && (i < msg_Obj.length))
+                       {
+                        i++;
+                        }
+                     }
+                 $("#madi_status").text(msg_Obj[i]['event_name']);
+                 $("#message").text(msg_Obj2['X_RESTBUS_MESSAGE_ID']);
+                 $("#date").text(msg_Obj[i]['event_date']);
+
+                 $("#Madi_Button").click(function(){
+                      var msg_string2 = JSON.stringify(msg_Obj[i]);
+                      $("#Madi_msg").text(msg_string2);
+                       });
+
+                    },
+            error: function (request, status, error) {
+
+                  console.log("error");
+            }
+           });
+
+
+        });
+    });
+
+</script>
+
+
+</body>
+</html>

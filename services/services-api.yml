@@ -1,0 +1,246 @@
+healthCheckProperty: Flipkart ThunderingRhino Ad
+
+server:
+  requestLog:
+    appenders:
+      - type: file
+        currentLogFilename: /var/log/flipkart/flap/fk-ad-thundering-rhino-services/access.log
+        archivedLogFilenamePattern: /var/log/flipkart/flap/fk-ad-thundering-rhino-services/access-%d.log
+        archivedFileCount: 10
+  applicationConnectors:
+    - type: http
+      port: 25916
+  adminConnectors:
+    - type: http
+      port: 25917
+
+logging:
+  # Enable below DEBUG config for enable Debugging.
+  #loggers:
+   # "com.flipkart.flap": DEBUG
+  level: INFO
+  appenders:
+      - type: file
+        # The file to which current statements will be logged.
+        currentLogFilename: /var/log/flipkart/flap/fk-ad-thundering-rhino-services/app.log
+
+        # When the log file rotates, the archived log will be renamed to this and gzipped. The
+        # %d is replaced with the previous day (yyyy-MM-dd). Custom rolling windows can be created
+        # by passing a SimpleDateFormat-compatible format as an argument: "%d{yyyy-MM-dd-hh}".
+        archivedLogFilenamePattern: /var/log/flipkart/flap/fk-ad-thundering-rhino-services/app-%d.log
+
+        # The number of archived files to keep.
+        archivedFileCount: 10
+
+        # The timezone used to format dates. HINT: USE THE DEFAULT, UTC.
+        timeZone: UTC
+
+
+externalAPIBaseURL: http://10.47.2.173
+
+npsProductVipURL: http://10.33.106.109:8190/productService/getCustomProductDetails
+
+slackFilePath: /usr/share/fk-ad-thundering-rhino/www
+
+redisHost: 127.0.0.1
+redisPort: 6379
+
+# Flippers beyond this point
+campaignDetailsAPIFlipper:
+  enabled: true
+
+database:
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+
+  # the username
+  user: adsuser_rw
+
+  # the password
+  password: Tg6BegBl
+
+  # the JDBC URL
+  url: jdbc:mysql://127.0.0.1:7766/ads_monitoring?autoReconnect=true
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+
+  # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+
+  # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+  minIdleTime: 1 minute
+
+
+reportdatabase:
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+
+  # the username
+  user: data_report_ro
+
+  # the password
+  password: 5fBPpyi0
+
+  # the JDBC URL
+  url: jdbc:mysql://127.0.0.1:7799/datareportdb?autoReconnect=true
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+
+  # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+
+  # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+  minIdleTime: 1 minute
+
+
+camdatabase:
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+
+  # the username
+  user: adanalytics_ro
+
+  # the password
+  password: a08vYjXe
+
+  # the JDBC URL
+  url: jdbc:mysql://127.0.0.1:7788/adserverdb?autoReconnect=true
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+
+  # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+
+  # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+  minIdleTime: 1 minute
+
+
+
+anydatabase:
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+
+  # the username
+  user: adanalytics_ro
+
+  # the password
+  password: VWwJKKIi
+
+  # the JDBC URL
+  url: jdbc:mysql://127.0.0.1:7755/datareportdb?autoReconnect=true
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+
+  # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+
+  # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+  minIdleTime: 1 minute
+
+
+madidatabase:
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+
+  # the username
+  user: admadison_ro
+
+  # the password
+  password: 8kNu9Gwy
+
+  # the JDBC URL
+  url: jdbc:mysql://127.0.0.1:7744/admadison?autoReconnect=true
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+
+  # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+
+  # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+  minIdleTime: 1 minute
+

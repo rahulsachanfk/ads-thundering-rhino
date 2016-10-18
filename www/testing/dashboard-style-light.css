@@ -1,0 +1,121 @@
+/* Color scheme: https://dribbble.com/shots/1902911-Members-Management?list=tags&tag=web_design&offset=4 */
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+
+body {
+    background: #E1DFE3;
+    margin: 0;
+    font-family: 'Lucida Sans Unicode', helvetica, arial, sans-serif;
+    color: #727A93;
+   
+
+}
+
+h1.page-title {
+    display: block;
+    width: 100%;
+    margin: 0 0 0.5em 0;
+    padding: 0.5em 0.5em;
+    background-color: #39495f;
+    color: #E1DFE3;
+    font-size: 25px;
+    font-weight: normal;
+}
+h2#campaign-title {
+    padding-left: .6em;
+    color: #3D4B5F;
+}
+
+div.main {
+    display: block;
+    margin: 0.5em 0.5em;
+
+}
+div.main-content {
+    display: block;
+    padding: 0.5em 1em 0 0;
+    background-color: #F5F5F6;
+}
+div.main-header {
+    display: block;
+    padding: 0.5em 0 0.5em 1.5em ;
+
+    font-weight: bold;
+    color: #3D4B5F;
+    background-color: #FFFFFF;
+}
+
+div.table-header {
+    display: block;
+    padding: 0.5em 0 0.5em 1.5em ;
+    font-weight: bold;
+    color: #3D4B5F;
+    background-color: #FFFFFF;
+   word-spacing: 200px;
+   padding-right: 250px
+   letter-spacing: -3px;
+    padding: 0.5em 0 0.5em 1.5em ;	
+    
+}
+
+div.table-content {
+     display: block;
+    padding: 0.5em 1em 0 0;
+     padding-right: 40px;
+    background-color: #F5F5F6;
+    overflow:auto;
+     height: 60%;
+    overflow:scroll;
+    overflow-y:scroll;
+
+}
+div.main input {
+    font-size: 12px;
+    color: #39495f;
+    padding: 0.5em;
+}
+
+.right {
+    float: right;
+}
+
+div.section {
+    display: inline-block;
+    width: 29%;
+    box-sizing: border-box;
+    margin: 1em;
+}
+
+span.label {
+    font-weight: normal;
+    color: #3D4B5F;
+}
+
+span.value {
+    font-weight: 300;
+}
+
+input#campaign-submit {
+    border: 1px solid #A2A3A5;
+}
+
+div.table-content.table-listing {
+      border-collapse: separate;
+    border-spacing: 510px 0px;
+}
+
+#instock {
+cursor: pointer;
+}
+
+#img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -(X/2)px;
+    margin-top: -(Y/2)px;
+}

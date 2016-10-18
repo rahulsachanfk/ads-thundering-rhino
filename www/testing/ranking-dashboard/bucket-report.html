@@ -1,0 +1,1077 @@
+<html>
+
+<script src="../lib/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../lib/canvasjs.min.js"></script>
+
+<link rel="stylesheet" href="../lib/jquery-ui.css">
+<script src="../lib/jquery-ui.js"></script>
+
+<style type="text/css">
+    table.myTable {
+        border-collapse: collapse;
+    }
+    table.myTable td {
+        border: 1px solid yellowgreen;
+        padding: 2px;
+        font-family: 'Arial';
+        font-size: 11;
+    }
+    table.myTable th {
+        border: 1px solid yellowgreen;
+        padding: 5px;
+        font-family: 'Arial';
+        font-size: 12;
+        font-weight: bold;
+    }
+    table.mytable tr:hover td {background: #0000FF}
+
+    span.dropt:hover {text-decoration: none; background: #0000FF; z-index: 6; }
+    span.dropt span {position: absolute; left: -9999px;
+        margin: 20px 0 0 0px; padding: 3px 3px 3px 3px;
+        border-style:solid; border-color:black; border-width:1px; z-index: 6;}
+    span.dropt:hover span {left: 2%; background: #0000FF;}
+    span.dropt span {position: absolute; left: -9999px;
+        margin: 4px 0 0 0px; padding: 3px 3px 3px 3px;
+        border-style:solid; border-color:black; border-width:1px;}
+    span.dropt:hover span {margin: 20px 0 0 170px; background: #0000FF; z-index:6;}
+</style>
+
+<style>
+    body {background-color: black;
+        font-family: Arial;
+        font-size: small;
+    }
+    p {
+        text: white;
+        font-family: Arial;
+        font-size: small;
+    }
+</style>
+
+<script>
+    $(function () {
+        $('.dateTxt').datepicker({dateFormat: 'yy-mm-dd'}).val()
+    });
+</script>
+
+<script>
+
+    function formatNumber(val) {
+        return parseFloat(val).toFixed(4);
+    }
+
+    var controlBucket = "ProdControl";
+    function addAllColumnHeaders(bucketHourlyData) {
+        var columnSet = [];
+        var headerTr$ = $('<tr/>');
+
+        for (var i = 0; i < bucketHourlyData.length; i++) {
+            var rowHash = bucketHourlyData[i];
+            for (var key in rowHash) {
+                if ($.inArray(key, columnSet) == -1) {
+                    if(key == "year" || key == "month" || key == "day" || key == "startHour" || key == "bucketParams"){
+                        continue;
+                    }
+                    columnSet.push(key);
+                    headerTr$.append($('<th/>').html(key));
+                }
+            }
+        }
+        columnSet.push("date");
+        headerTr$.append($('<th/>').html("date"));
+        $("#dataTable").html("<table class='mytable' id='excelDataTable' border='1'  ></table>");
+        $("#excelDataTable").append(headerTr$);
+
+        return columnSet;
+    }
+
+    function drawCompareTable(bucketHourlyData, bucketDailyData) {
+
+        var headerTr$ = $('<tr/>');
+        headerTr$.append($('<th/>').html("Treatment Bucket"));
+        headerTr$.append($('<th/>').html("Compare Start Date"));
+        headerTr$.append($('<th/>').html("DeltaCTR"));
+        headerTr$.append($('<th/>').html("DeltaAR"));
+        headerTr$.append($('<th/>').html("DeltaCPC"));
+        headerTr$.append($('<th/>').html("DeltaRPM"));
+        headerTr$.append($('<th/>').html("DeltaCVR"));
+        headerTr$.append($('<th/>').html("CTR"));
+        headerTr$.append($('<th/>').html("Action Rate"));
+        headerTr$.append($('<th/>').html("CPC"));
+        headerTr$.append($('<th/>').html("RPM"));
+        headerTr$.append($('<th/>').html("CVR"));
+
+        $("#compareTable").html("<table class='myTable' id='compareDataTable'></table>");
+        $("#compareDataTable").append(headerTr$);
+
+        var bucketComapreMap = new Map();
+        for (var i = 0; i < bucketHourlyData.length; i++) {
+            var comparePoints = [];
+            var checkKey = bucketHourlyData[i].bucketId;
+            if (bucketComapreMap[checkKey]) {
+                comparePoints = bucketComapreMap[checkKey];
+                comparePoints[0] += bucketHourlyData[i].impression;
+                comparePoints[1] += bucketHourlyData[i].views;
+                comparePoints[2] += bucketHourlyData[i].engagement;
+                comparePoints[3] += bucketHourlyData[i].revenue;
+                bucketComapreMap[checkKey] = comparePoints;
+            } else {
+                comparePoints.push(bucketHourlyData[i].impression);
+                comparePoints.push(bucketHourlyData[i].views);
+                comparePoints.push(bucketHourlyData[i].engagement);
+                comparePoints.push(bucketHourlyData[i].revenue);
+                comparePoints.push(bucketHourlyData[i].year +"-"+bucketHourlyData[i].month+"-"+bucketHourlyData[i].day+"  "+bucketHourlyData[i].startHour+":00:00");
+                bucketComapreMap[checkKey] = comparePoints;
+            }
+        }
+
+        var bucketComapreMapDaily = new Map();
+        for (var i = 0; i < bucketDailyData.length; i++) {
+            var comparePoints = [];
+            var checkKey = bucketDailyData[i].bucketId;
+            
+            if (bucketComapreMapDaily[checkKey]) {
+                comparePoints = bucketComapreMapDaily[checkKey];
+                comparePoints[0] += bucketDailyData[i].conversion;
+                comparePoints[1] += bucketDailyData[i].engagements;
+                comparePoints[2] += bucketDailyData[i].impressions;
+
+                bucketComapreMapDaily[checkKey] = comparePoints;
+            } else {
+                comparePoints.push(bucketDailyData[i].conversion);
+                comparePoints.push(bucketDailyData[i].engagements);
+                comparePoints.push(bucketDailyData[i].impressions);
+                bucketComapreMapDaily[checkKey] = comparePoints;
+            }
+
+        }
+
+        var bucketDeltaMap = new Map();
+        for (var key in bucketComapreMap) {
+            var comparePoints = bucketComapreMap[key];
+            var comparePointsDaily = bucketComapreMapDaily[key];
+
+
+            var avgCtr = comparePoints[2]/comparePoints[0];
+            var avgAR = comparePoints[2]/comparePoints[1];
+            var cpc = comparePoints[3]/comparePoints[2];
+            var rpm = comparePoints[3]/comparePoints[0];
+
+            var cvr;
+            if(comparePointsDaily != null){
+                cvr = comparePointsDaily[0]/comparePointsDaily[1];
+            }
+
+            bucketDeltaMap[key] = [avgCtr, avgAR, cpc, rpm, cvr, comparePoints[4]];
+        }
+
+        for (var key in bucketDeltaMap) {
+                var row$ = $('<tr/>');
+
+                row$.append($('<td/>').html(key));
+                row$.append($('<td/>').html(bucketDeltaMap[key][5]));
+
+                var deltactr = (bucketDeltaMap[key][0] - bucketDeltaMap[controlBucket][0]) / bucketDeltaMap[controlBucket][0];
+                deltactr = formatNumber(deltactr);
+                var txtColor = 'green';
+                if(deltactr<0)
+                    txtColor = 'red'
+                var fontStr = "<font color='" + txtColor + "'>" + deltactr;
+                row$.append($('</font><td/>').html(fontStr));
+
+                var deltaAr = (bucketDeltaMap[key][1] - bucketDeltaMap[controlBucket][1]) / bucketDeltaMap[controlBucket][1];
+                deltaAr = formatNumber(deltaAr);
+                txtColor = 'green';
+                if(deltaAr<0)
+                    txtColor = 'red'
+                fontStr = "<font color='" + txtColor + "'>" + deltaAr;
+                row$.append($('</font><td/>').html(fontStr));
+
+                var deltacpc = (bucketDeltaMap[key][2] - bucketDeltaMap[controlBucket][2]) / bucketDeltaMap[controlBucket][2];
+            deltacpc = formatNumber(deltacpc);
+                txtColor = 'green';
+                if(deltacpc<0)
+                    txtColor = 'red'
+                fontStr = "<font color='" + txtColor + "'>" + deltacpc;
+                row$.append($('</font><td/>').html(fontStr));
+
+            var deltarpm = (bucketDeltaMap[key][3] - bucketDeltaMap[controlBucket][3]) / bucketDeltaMap[controlBucket][3];
+            deltarpm = formatNumber(deltarpm);
+            txtColor = 'green';
+            if(deltarpm<0)
+                txtColor = 'red'
+            fontStr = "<font color='" + txtColor + "'>" + deltarpm;
+            row$.append($('</font><td/>').html(fontStr));
+
+            var deltacvr = (bucketDeltaMap[key][4] - bucketDeltaMap[controlBucket][4]) / bucketDeltaMap[controlBucket][4];
+            deltacvr = formatNumber(deltacvr);
+            txtColor = 'green';
+            if(deltacvr<0)
+                txtColor = 'red'
+            fontStr = "<font color='" + txtColor + "'>" + deltacvr;
+            row$.append($('</font><td/>').html(fontStr));
+
+
+            row$.append($('</font><td/>').html(formatNumber(bucketDeltaMap[key][0])));
+            row$.append($('</font><td/>').html(formatNumber(bucketDeltaMap[key][1])));
+            row$.append($('</font><td/>').html(formatNumber(bucketDeltaMap[key][2])));
+            row$.append($('</font><td/>').html(formatNumber(bucketDeltaMap[key][3])));
+            row$.append($('</font><td/>').html(formatNumber(bucketDeltaMap[key][4])));
+
+
+                $("#compareDataTable").append(row$);
+            }
+            document.getElementById('controlBucket').innerHTML = "Control Bucket = " + controlBucket ;
+    }
+
+    function callback(bucketHourlyData){
+
+        var bucketStatsList = bucketHourlyData.bucketStatInfoList;
+        var bucketStatsListBias = bucketHourlyData.bucketStatInfoBiasList;
+        var bucketStatsListDaily = bucketHourlyData.bucketDailyStatsList;
+
+        dailyCallback(bucketStatsListDaily);
+
+        document.getElementById('compareTable').style.visibility = 'visible';
+        drawCompareTable(bucketStatsList, bucketStatsListDaily);
+
+        var columns = addAllColumnHeaders(bucketStatsList);
+
+        for (var i = 0; i < bucketStatsList.length; i++) {
+            var row$ = $('<tr/>');
+            for (var colIndex = 0; colIndex < columns.length; colIndex++) {
+
+                var cellValue = bucketStatsList[i][columns[colIndex]];
+
+                if (cellValue == null) {
+                    cellValue = "";
+                }
+
+                if(columns[colIndex] == "date"){
+                    cellValue = bucketStatsList[i].year + ":" +bucketStatsList[i].month + ":" + bucketStatsList[i].day + ":" + bucketStatsList[i].startHour;
+                } else if(columns[colIndex] =="ctr" || columns[colIndex] =="actionRate" || columns[colIndex] =="avgPctr" || columns[colIndex] =="rankingScore" ||  columns[colIndex] =="cpc" || columns[colIndex] == "revenue") {
+                    cellValue = formatNumber(cellValue);
+                }
+                row$.append($('<td/>').html("<span class=\"dropt\">"+cellValue + "<span>" + bucketStatsList[i].bucketParams +"</span> </span>"));
+            }
+
+            $("#excelDataTable").append(row$);
+        }
+
+        var bucketCTRMap = new Map();
+        var bucketARMap = new Map();
+        var bucketWeightMap = new Map();
+        var bucketpCTRMap = new Map();
+        var bucketRankingScoreMap = new Map();
+        var bucketCPCMap = new Map();
+        var bucketRevenueMap = new Map();
+        var data = bucketStatsList;
+
+        var len = bucketStatsList.length;
+        for (var i = 0; i < len; i++) {
+            var ctrPonits = [];
+            var arPoints = [];
+            var weightPoints = [];
+            var pCTRPoints = [];
+            var rankingScorePoints= [];
+            var cpcPoints = [];
+            var revenuePoints = [];
+            var bucketId = data[i].bucketId;
+            //console.log("bucketIds: "+ bucketId);
+            var mDate = new Date(data[i].year +" "+data[i].month+" "+data[i].day+" "+data[i].startHour+":00:00");
+            if (bucketCTRMap[bucketId]) {
+                ctrPonits = bucketCTRMap[bucketId];
+                ctrPonits.push({
+                    "x": mDate,
+                    "y": data[i].ctr
+                });
+                bucketCTRMap[bucketId] = ctrPonits;
+
+                arPoints = bucketARMap[bucketId];
+                arPoints.push({
+                    "x": mDate,
+                    "y": data[i].actionRate
+                });
+                bucketARMap[bucketId] = arPoints;
+
+                weightPoints = bucketWeightMap[bucketId];
+                weightPoints.push({
+                    "x": mDate,
+                    "y": data[i].weight
+                });
+                bucketWeightMap[bucketId] = weightPoints;
+
+                pCTRPoints = bucketpCTRMap[bucketId];
+                pCTRPoints.push({
+                    "x": mDate,
+                    "y": data[i].avgPctr
+                });
+                bucketpCTRMap[bucketId] = pCTRPoints;
+
+                rankingScorePoints = bucketRankingScoreMap[bucketId];
+                rankingScorePoints.push({
+                    "x": mDate,
+                    "y": data[i].rankingScore
+                });
+                bucketRankingScoreMap[bucketId] = rankingScorePoints;
+
+                cpcPoints = bucketCPCMap[bucketId];
+                cpcPoints.push({
+                    "x": mDate,
+                    "y": data[i].cpc
+                });
+                bucketCPCMap[bucketId] = cpcPoints;
+
+                revenuePoints = bucketRevenueMap[bucketId];
+                revenuePoints.push({
+                    "x": mDate,
+                    "y": (data[i].revenue / data[i].impression)
+                });
+                bucketRevenueMap[bucketId] = revenuePoints;
+            } else {
+                ctrPonits.push({
+                    "x": mDate,
+                    "y": data[i].ctr
+                });
+                bucketCTRMap[bucketId] = ctrPonits;
+
+                arPoints.push({
+                    "x": mDate,
+                    "y": data[i].actionRate
+                });
+                bucketARMap[bucketId] = arPoints;
+
+                weightPoints.push({
+                    "x": mDate,
+                    "y": data[i].weight
+                });
+                bucketWeightMap[bucketId] = weightPoints;
+
+                pCTRPoints.push({
+                    "x": mDate,
+                    "y": data[i].avgPctr
+                });
+                bucketpCTRMap[bucketId] = pCTRPoints;
+
+                rankingScorePoints.push({
+                    "x": mDate,
+                    "y": data[i].rankingScore
+                });
+                bucketRankingScoreMap[bucketId] = rankingScorePoints;
+
+                cpcPoints.push({
+                    "x": mDate,
+                    "y": data[i].cpc
+                });
+                bucketCPCMap[bucketId] = cpcPoints;
+
+                revenuePoints.push({
+                    "x": mDate,
+                    "y": (data[i].revenue/ data[i].impression)
+                });
+                bucketRevenueMap[bucketId] = revenuePoints;
+            }
+        }
+
+        drawChart(bucketCTRMap, bucketARMap, bucketWeightMap, bucketpCTRMap, bucketRankingScoreMap, bucketCPCMap, bucketRevenueMap);
+    }
+
+    function drawChart(bucketCTRMap, bucketARMap, bucketWeightMap, bucketpCTRMap, bucketRankingScoreMap, bucketCPCMap, bucketRevenueMap) {
+        var data = [];
+        for (var key in bucketCTRMap) {
+            data.push({type: "spline", showInLegend: true, name: key, lineThickness: 1, dataPoints: bucketCTRMap[key]});
+        }
+
+        var chart = new CanvasJS.Chart("ctrChart",
+                {
+                    backgroundColor: "#000000",
+                    animationEnabled: true,
+                    title: {
+                        fontColor: "white",
+                        text: "CTR",
+                        //fontSize: "12"
+                    },
+                    axisX: {
+                        valueFormatString: "YYYY-M-D-H",
+                        labelAngle: -50
+                    },
+                    axisY:{
+                        stripLines:[
+                            {
+                                startValue:0.2,
+                                endValue:0.3,
+                                color:"#FFFFFF"
+                            }
+                        ]
+                    },
+                    theme: "theme2",
+                    toolTip: {
+                        shared: true
+                    },
+                    data,
+                    legend: {
+                        fontColor: "white",
+                        cursor: "pointer",
+                        itemclick: function (e) {
+                            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                e.dataSeries.visible = false;
+                            }
+                            else {
+                                e.dataSeries.visible = true;
+                            }
+                            chart.render();
+                        }
+                    }
+                });
+        chart.render();
+
+        //Chart for Avg pCTR Chart
+        data = [];
+        for (var key in bucketpCTRMap) {
+            data.push({
+                type: "spline",
+                showInLegend: true,
+                name: key,
+                lineThickness: 1,
+                dataPoints: bucketpCTRMap[key]
+            });
+        }
+        var chart1 = new CanvasJS.Chart("avg_pCTR_Chart",
+                {
+                    backgroundColor: "#000000",
+                    animationEnabled: true,
+                    title: {
+                        fontColor: "white",
+                        text: "Average Predicted CTR"
+                    },
+                    axisX: {
+                        valueFormatString: "YYYY-M-D-H",
+                        labelAngle: -50
+                    },
+                    theme: "theme2",
+                    toolTip: {
+                        shared: true
+                    },
+                    data,
+                    legend: {
+                        fontColor: "white",
+                        cursor: "pointer",
+                        itemclick: function (e) {
+                            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                e.dataSeries.visible = false;
+                            }
+                            else {
+                                e.dataSeries.visible = true;
+                            }
+                            chart1.render();
+                        }
+                    }
+                });
+        chart1.render();
+
+        //ActionRate Chart
+        data = [];
+        for (var key in bucketARMap) {
+            data.push({type: "spline", showInLegend: true, name: key, lineThickness: 1, dataPoints: bucketARMap[key]});
+        }
+        var chart2 = new CanvasJS.Chart("actionRateChart",
+                {
+                    backgroundColor: "#000000",
+                    animationEnabled: true,
+                    title: {
+                        fontColor: "white",
+                        text: "Action Rate"
+                    },
+                    axisX: {
+                        valueFormatString: "YYYY-M-D-H",
+                        labelAngle: -50
+                    },
+                    theme: "theme2",
+                    toolTip: {
+                        shared: true
+                    },
+                    data,
+                    legend: {
+                        fontColor: "white",
+                        cursor: "pointer",
+                        itemclick: function (e) {
+                            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                e.dataSeries.visible = false;
+                            }
+                            else {
+                                e.dataSeries.visible = true;
+                            }
+                            chart2.render();
+                        }
+                    }
+                });
+        chart2.render();
+
+        //Weight Chart
+        data = [];
+        for (var key in bucketWeightMap) {
+            data.push({
+                type: "spline",
+                showInLegend: true,
+                name: key,
+                lineThickness: 1,
+                dataPoints: bucketWeightMap[key]
+            });
+        }
+        var chart3 = new CanvasJS.Chart("weightChart",
+                {
+                    backgroundColor: "#000000",
+                    animationEnabled: true,
+                    title: {
+                        fontColor: "white",
+                        text: "Bucket Weight"
+                    },
+                    axisX: {
+                        valueFormatString: "YYYY-M-D-H",
+                        labelAngle: -50
+                    },
+                    theme: "theme2",
+                    toolTip: {
+                        shared: true
+                    },
+                    data,
+                    legend: {
+                        fontColor: "white",
+                        cursor: "pointer",
+                        itemclick: function (e) {
+                            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                e.dataSeries.visible = false;
+                            }
+                            else {
+                                e.dataSeries.visible = true;
+                            }
+                            chart3.render();
+                        }
+                    }
+                });
+        chart3.render();
+
+    //Ranking Score Chart
+    data = [];
+    for (var key in bucketRankingScoreMap) {
+        data.push({
+            type: "spline",
+            showInLegend: true,
+            name: key,
+            lineThickness: 1,
+            dataPoints: bucketRankingScoreMap[key]
+        });
+    }
+    var chart4 = new CanvasJS.Chart("rankingScoreChart",
+            {
+                backgroundColor: "#000000",
+                animationEnabled: true,
+                title: {
+                    fontColor: "white",
+                    text: "Avg Ranking Score"
+                },
+                axisX: {
+                    valueFormatString: "YYYY-M-D-H",
+                    labelAngle: -50
+                },
+                theme: "theme2",
+                toolTip: {
+                    shared: true
+                },
+                data,
+                legend: {
+                    fontColor: "white",
+                    cursor: "pointer",
+                    itemclick: function (e) {
+                        if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                            e.dataSeries.visible = false;
+                        }
+                        else {
+                            e.dataSeries.visible = true;
+                        }
+                        chart4.render();
+                    }
+                }
+            });
+    chart4.render();
+
+    //CPC Chart
+    data = [];
+    for (var key in bucketCPCMap) {
+        data.push({
+            type: "spline",
+            showInLegend: true,
+            name: key,
+            lineThickness: 1,
+            dataPoints: bucketCPCMap[key]
+        });
+    }
+    var chart5 = new CanvasJS.Chart("cpcChart",
+            {
+                backgroundColor: "#000000",
+                animationEnabled: true,
+                title: {
+                    fontColor: "white",
+                    text: "CPC"
+                },
+                axisX: {
+                    valueFormatString: "YYYY-M-D-H",
+                    labelAngle: -50
+                },
+                theme: "theme2",
+                toolTip: {
+                    shared: true
+                },
+                data,
+                legend: {
+                    fontColor: "white",
+                    cursor: "pointer",
+                    itemclick: function (e) {
+                        if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                            e.dataSeries.visible = false;
+                        }
+                        else {
+                            e.dataSeries.visible = true;
+                        }
+                        chart5.render();
+                    }
+                }
+            });
+    chart5.render();
+
+    //Revenue Chart
+    data = [];
+    for (var key in bucketRevenueMap) {
+        data.push({
+            type: "spline",
+            showInLegend: true,
+            name: key,
+            lineThickness: 1,
+            dataPoints: bucketRevenueMap[key]
+        });
+    }
+    var chart6 = new CanvasJS.Chart("revenueChart",
+            {
+                backgroundColor: "#000000",
+                animationEnabled: true,
+                title: {
+                    fontColor: "white",
+                    text: "Revenue Per Mille"
+                },
+                axisX: {
+                    valueFormatString: "YYYY-M-D-H",
+                    labelAngle: -50
+                },
+                theme: "theme2",
+                toolTip: {
+                    shared: true
+                },
+                data,
+                legend: {
+                    fontColor: "white",
+                    cursor: "pointer",
+                    itemclick: function (e) {
+                        if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                            e.dataSeries.visible = false;
+                        }
+                        else {
+                            e.dataSeries.visible = true;
+                        }
+                        chart6.render();
+                    }
+                }
+            });
+    chart6.render();
+    }
+
+</script>
+
+<script type="text/javascript">
+    function dailyCallback(dailyConverasionStats){
+        var bucketCVRMap = [];
+        var bucketCVIMap = [];
+        var bucketAUCMap = [];
+        var data = dailyConverasionStats;
+        var len = dailyConverasionStats.length;
+        for (var i = 0; i < len; i++) {
+            var cvrPonits = [];
+            var cviPoints = [];
+            var aucPoints = [];
+            var bucketId = data[i].bucketId;
+
+            var mDate = new Date(data[i].year+" "+data[i].month+" "+data[i].day+" "+"00:00:00");
+            if (bucketCVRMap[bucketId]) {
+                cvrPonits = bucketCVRMap[bucketId];
+                cvrPonits.push({
+                    "x": mDate,
+                    "y": data[i].cvr
+                });
+                bucketCVRMap[bucketId] = cvrPonits;
+
+                cviPoints = bucketCVIMap[bucketId];
+                cviPoints.push({
+                    "x": mDate,
+                    "y": data[i].cvi
+                });
+                bucketCVIMap[bucketId] = cviPoints;
+
+                aucPoints = bucketAUCMap[bucketId];
+                aucPoints.push({
+                    "x": mDate,
+                    "y": data[i].auc
+                });
+                bucketAUCMap[bucketId] = aucPoints;
+            } else {
+                cvrPonits.push({
+                    "x": mDate,
+                    "y": data[i].cvr
+                });
+                bucketCVRMap[bucketId] = cvrPonits;
+
+                cviPoints.push({
+                    "x": mDate,
+                    "y": data[i].cvi
+                });
+                bucketCVIMap[bucketId] = cviPoints;
+
+                aucPoints.push({
+                    "x": mDate,
+                    "y": data[i].auc
+                });
+                bucketAUCMap[bucketId] = aucPoints;
+            }
+        }
+
+        drawChartConversion(bucketCVRMap, bucketCVIMap, bucketAUCMap);
+    }
+    function drawChartConversion(bucketCVRMap, bucketCVIMap, bucketAUCMap){
+        var data = [];
+        for (var key in bucketCVRMap) {
+            data.push({type: "spline", showInLegend: true, name: key, lineThickness: 1, dataPoints: bucketCVRMap[key]});
+        }
+
+        var chart = new CanvasJS.Chart("cvrChart",
+                {
+                    backgroundColor: "#000000",
+                    animationEnabled: true,
+                    title: {
+                        fontColor: "white",
+                        text: "CVR",
+                        //fontSize: "12"
+                    },
+                    axisX: {
+                        valueFormatString: "YYYY-M-D-H",
+                        labelAngle: -50
+                    },
+                    axisY:{
+                        stripLines:[
+                            {
+                                startValue:0.2,
+                                endValue:0.3,
+                                color:"#FFFFFF"
+                            }
+                        ]
+                    },
+                    theme: "theme2",
+                    toolTip: {
+                        shared: true
+                    },
+                    data,
+                    legend: {
+                        fontColor: "white",
+                        cursor: "pointer",
+                        itemclick: function (e) {
+                            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                e.dataSeries.visible = false;
+                            }
+                            else {
+                                e.dataSeries.visible = true;
+                            }
+                            chart.render();
+                        }
+                    }
+                });
+        chart.render();
+
+        //CVI Chart
+        data = [];
+        for (var key in bucketCVIMap) {
+            data.push({type: "spline", showInLegend: true, name: key, lineThickness: 1, dataPoints: bucketCVIMap[key]});
+        }
+
+        var chart1 = new CanvasJS.Chart("cviChart",
+                {
+                    backgroundColor: "#000000",
+                    animationEnabled: true,
+                    title: {
+                        fontColor: "white",
+                        text: "CVI",
+                        //fontSize: "12"
+                    },
+                    axisX: {
+                        valueFormatString: "YYYY-M-D-H",
+                        labelAngle: -50
+                    },
+                    axisY:{
+                        stripLines:[
+                            {
+                                startValue:0.2,
+                                endValue:0.3,
+                                color:"#FFFFFF"
+                            }
+                        ]
+                    },
+                    theme: "theme2",
+                    toolTip: {
+                        shared: true
+                    },
+                    data,
+                    legend: {
+                        fontColor: "white",
+                        cursor: "pointer",
+                        itemclick: function (e) {
+                            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                e.dataSeries.visible = false;
+                            }
+                            else {
+                                e.dataSeries.visible = true;
+                            }
+                            chart1.render();
+                        }
+                    }
+                });
+        chart1.render();
+
+        //AUC Chart
+        data = [];
+        for (var key in bucketAUCMap) {
+            data.push({type: "spline", showInLegend: true, name: key, lineThickness: 1, dataPoints: bucketAUCMap[key]});
+        }
+
+        var chart2 = new CanvasJS.Chart("aucChart",
+                {
+                    backgroundColor: "#000000",
+                    animationEnabled: true,
+                    title: {
+                        fontColor: "white",
+                        text: "AUC",
+                        //fontSize: "12"
+                    },
+                    axisX: {
+                        valueFormatString: "YYYY-M-D-H",
+                        labelAngle: -50
+                    },
+                    axisY:{
+                        stripLines:[
+                            {
+                                startValue:0.2,
+                                endValue:0.3,
+                                color:"#FFFFFF"
+                            }
+                        ]
+                    },
+                    theme: "theme2",
+                    toolTip: {
+                        shared: true
+                    },
+                    data,
+                    legend: {
+                        fontColor: "white",
+                        cursor: "pointer",
+                        itemclick: function (e) {
+                            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                e.dataSeries.visible = false;
+                            }
+                            else {
+                                e.dataSeries.visible = true;
+                            }
+                            chart2.render();
+                        }
+                    }
+                });
+        chart2.render();
+    }
+</script>
+
+<script type="text/javascript">
+
+
+    function generateUrl() {
+        var reportUrl;
+        var queryParams;
+        document.getElementById('compareTable').style.visibility = 'hidden';
+        if (document.getElementById("endDate").value == "") {
+            alert("End Date is mandatory parameter.");
+        } else {
+            var endDate = document.getElementById("endDate").value;
+            queryParams = "endDate=" + endDate + "&";
+            dailyqueryParams = "endDate=" + endDate + "&";
+
+
+            if (document.getElementById("startDate").value != "Optional" && document.getElementById("startDate").value != "") {
+                var startDate = document.getElementById("startDate").value;
+                queryParams = queryParams + "startDate=" + startDate + "&";
+                dailyqueryParams = dailyqueryParams + "startDate=" + startDate + "&";
+
+                var difference = new Date(endDate) - new Date(startDate);
+                if (difference > 30 * 24 * 3600 * 1000) {
+                    alert("Start date and End date interval should not be greater than 30 days.");
+                } else if (difference < 0) {
+                    alert("End Date should be greater than Start Date.");
+                }
+            }
+
+            if (document.getElementById("bucketId1").value != "Optional" && document.getElementById("bucketId1").value != "") {
+                queryParams = queryParams + "bucketId=" + document.getElementById("bucketId1").value;
+                dailyqueryParams = dailyqueryParams + "bucketId=" + document.getElementById("bucketId1").value;
+                controlBucket = document.getElementById("bucketId1").value;
+                if (document.getElementById("bucketId2").value != "Optional" && document.getElementById("bucketId2").value != "") {
+                    queryParams = queryParams + "," + document.getElementById("bucketId2").value + "&";
+                }
+                else {
+                    queryParams = queryParams + "&"
+                }
+            } else{
+                controlBucket = "ProdControl";
+            }
+
+            var e = document.getElementById("context");
+            var strContext = e.options[e.selectedIndex].value;
+            if(strContext != "all") {
+                queryParams = queryParams + "context=" + strContext + "&";
+            }
+            var aggregate;
+            var radios = document.getElementsByName("aggregate");
+
+            for (var i = 0, len = radios.length; i < len; i++) {
+                if (radios[i].checked) {
+                    aggregate = radios[i].value;
+                    break;
+                }
+            }
+
+            queryParams = queryParams + "aggregate=" + aggregate + "&";
+            reportUrl = "http://10.33.106.173:25916/bucket/stats?" + queryParams + "callback=callback";
+            //reportUrl = "http://localhost:25916/bucket/stats?" + queryParams + "callback=callback";
+            getBucketReport(reportUrl);
+        }
+    }
+
+    function getBucketReport(reportUrl){
+        var JSElement = document.createElement('script');
+        var JSElement1 = document.createElement('script');
+
+        if(reportUrl == "") {
+            var date = new Date();
+            var endDate = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+
+            date.setDate(date.getDate() - 1);
+            var startDate = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+            reportUrl = "http://10.33.106.173:25916/bucket/stats/?endDate="+ endDate +"&startDate="+ startDate +"&callback=callback";
+            //reportUrl = "http://localhost:25916/bucket/stats/?endDate="+ endDate +"&startDate="+ startDate +"&callback=callback";
+            JSElement.src = reportUrl;
+        } else {
+            JSElement.src = reportUrl;
+        }
+        document.getElementsByTagName('head')[0].appendChild(JSElement);
+        console.log("Getting Response for Url= " + reportUrl);
+
+    }
+</script>
+<script>
+
+    $(document).ready(function(){
+        // we call the function
+        getBucketReport('');
+    });
+
+    jQuery(document).ready(function () {
+        jQuery('#hideshow').on('click', function (event) {
+            jQuery('#dataTable').toggle('hide');
+        });
+    });
+</script>
+<h1>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <center>PLA A/B Dashboard</center>
+</h1>
+<body  text="white" onload="">
+<p></p>
+
+<form>
+    Start Date: <input id="startDate" onfocus="this.value=''" value="" class="dateTxt" type="text">
+    *End Date: <input id="endDate" onfocus="this.value=''" value="" class="dateTxt" type="text">
+    Control Bucket: <input id="bucketId1" onfocus="this.value=''" value="">
+    Treatment Bucket: <input id="bucketId2" onfocus="this.value=''" value="">
+    <br></br>
+    <select id="context">
+        <option value="all" selected = "selected">All</option>
+        <option value="search">Search</option>
+        <option value="browse">Browse</option>
+    </select>&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="radio" name="aggregate" value="hour" checked>Hour
+    <input type="radio" name="aggregate" value="day">Day
+</form>
+<input type="submit" id="button1" onclick="generateUrl();" value="Submit"/>
+
+<p id="controlBucket"> Control Bucket = ProdControl </p>
+
+<div id="compareTable"></div>
+<p>Toggle any chart by clicking on chart legend</p>
+<table style="width:100%">
+    <tr>
+        <td width="50%">
+            <div id="cvrChart" style="height: 300px; "></div>
+        </td>
+        <td width="50%">
+            <div id="actionRateChart" style="height: 300px; "></div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="cpcChart" style="height: 300px; "></div>
+        </td>
+        <td>
+            <div id="revenueChart" style="height: 300px; "></div>
+        </td>
+    </tr>
+</table>
+<table style="width:100%">
+    <tr>
+        <td>
+            <div id="ctrChart" style="height: 300px; "></div>
+        </td>
+        <td>
+            <div id="cviChart" style="height: 300px; "></div>
+        </td>
+    </tr>
+</table>
+<table style="width:100%">
+    <tr>
+        <td>
+            <div id="avg_pCTR_Chart" style="height: 300px; "></div>
+        </td>
+        <td>
+            <div id="rankingScoreChart" style="height: 300px; "></div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="aucChart" style="height: 300px; "></div>
+        </td>
+        <td>
+            <div id="weightChart" style="height: 300px;"></div>
+        </td>
+    </tr>
+</table>
+
+<input type='button' id='hideshow' value='Toggle Raw Data Table'>
+<div id="dataTable" class="hidden"></div>
+
+</body>
+
+</html>

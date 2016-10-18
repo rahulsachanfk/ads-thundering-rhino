@@ -1,0 +1,76 @@
+<html>
+<head>
+    <title>Adserve Debug</title>
+    <link rel="stylesheet" type="text/css" href="../lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="jquery-ui.min.css">
+    <style>
+        #form {
+            padding: 1em;
+            text-align: justify;
+            background-color: #0078e7;
+        }
+
+        #form .form-group label {
+            color: #ffffff;
+        }
+
+        #form .form-group #slot {
+            width: 5em;
+        }
+
+        #form:after {
+            content: '';
+            display: inline-block;
+            width: 100%;
+        }
+
+        .ui-tooltip{
+            max-width: 500px;
+        }
+    </style>
+    <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="jquery-ui.min.js"></script>
+</head>
+
+<body>
+
+    <form class="form-inline" id="form">
+
+        <div class="form-group">
+            <label for="query">Query: </label>
+            <input type="text" class="form-control" id="query">
+        </div>
+
+        <div class="form-group">
+            <label for="slot">Slot: </label>
+            <input type="text" class="form-control" min="1" id="slot">
+        </div>
+
+        <div class="form-group">
+            <label for="facet">Facets: </label>
+            <input type="text" class="form-control" id="facet">
+        </div>
+
+        <div class="form-group">
+            <label for="listing">Listing ID: </label>
+            <input type="text" class="form-control" id="listing">
+        </div>
+
+        <div class="form-group">
+            <label for="store">Store Path: </label>
+            <input type="text" readonly class="form-control" id="store">
+        </div>
+
+        <div class="form-group">
+            <button type="button" id="submit" class="btn btn-default">Submit</button>
+        </div>
+
+    </form>
+
+
+    <div id="display" style="margin-left: 1em"></div>
+
+</body>
+</html>

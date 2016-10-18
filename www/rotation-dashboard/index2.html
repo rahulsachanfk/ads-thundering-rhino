@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="rotation-in-dark.css"/>
+    <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="application-clusters.js"></script>
+    <script type="text/javascript" src="dashboard-application.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Rotation Status</title>
+  </head>
+  <body>
+    <div id="rotation-dash"></div>
+    <script type="text/javascript">
+      initDashboard(getClusterConfig(), $, 'rotation-dash');
+    </script>
+  </body>
+</html>

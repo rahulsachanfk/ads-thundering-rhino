@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="package-versions-style.css"/>
+    <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="datajson.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Package Version Dashboard</title>
+  </head>
+  <body>
+    <div id="Rotation Status"> 
+      <table style="width:100%">
+        <tr>
+          <td>
+            <table border='1' id='ExternalAPI' style="width:100%">
+              <tr>
+                <th colspan="5" bgcolor="#5c5c5c">Ad Platform Package Versions Dashboard</th>
+              </tr>
+              <tr>
+                <th colspan="5" bgcolor="#333333">External API</th>
+              </tr>
+              <tr id='excluster'></tr>
+            </table>
+            <table border='1' id='InternalAPI' style="width:100%">
+              <tr>
+                <th colspan="5" bgcolor="#333333">Internal API </th>
+              </tr>
+              <tr id='incluster'></tr>
+            </table>
+            <table border='1' id='ReviveAdserve'  style="width:100%">
+              <tr>
+                <th colspan="5" bgcolor="#333333">Adserve External</th>
+              </tr>
+              <tr id='adservcluster'></tr>
+            </table>
+            <table border='1' id='Native' style="width:100%">
+              <tr>
+                <th colspan="5" bgcolor="#333333">Adserve Native</th>
+              </tr>
+              <tr id='nativecluster'></tr>
+            </table>
+            <table border='1' id='Admin' style="width:100%">
+              <tr>
+                <th colspan="5" bgcolor="#333333">Adserve Admin</th>
+              </tr>
+              <tr id='admincluster'></tr>
+            </table>
+            <table border='1' id='Maintanence' style="width:100%">
+              <tr>
+                <th colspan="5" bgcolor="#333333">Adserve Maintanence</th>
+              </tr>
+              <tr id='maintenancecluster'></tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

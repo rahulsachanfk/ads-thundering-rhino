@@ -1,0 +1,66 @@
+#!/bin/bash
+
+export PAC=_PACKAGE_
+[ -x /etc/default/${PAC} ] && . /etc/default/${PAC}
+
+export _active_processes="pgrep -U ${USER} -l -f java.*${PAC}"
+
+function start() {
+    $_active_processes && echo "Process already running, exiting" && exit 1
+    svc -u /etc/sv/$PAC
+    sleep 1
+    echo "Process status.."
+    $_active_processes
+}
+
+function start_native() {
+    $_active_processes && echo "Process already running, exiting" && exit 1
+    /etc/sv/$PAC/run &
+    sleep 1
+    echo "Process status.."
+    $_active_processes
+}
+
+function stop() {
+    echo "Alive processes for ${PAC}"
+    $_active_processes
+    sudo svc -d /etc/sv/${PAC}
+    sleep 4
+    echo "Alive processes after stopping"
+    $_active_processes
+}
+
+function kill_p() {
+    for i in $(pgrep -U ${USER} -f "java.*${PAC}" | tr '\n' ' '); do echo "Killing process $i"; sudo kill -9 $i ; done
+}
+
+function usage() {
+    cat <<USAGE
+    $0 start | stop | kill
+
+    stop    Try to stop process with usual mechanism
+    start   Start the process if it is not already running
+    kill    Kill the running processes
+USAGE
+exit 2
+}
+
+CMD=$1
+
+case $CMD in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    kill)
+        kill_p
+        ;;
+    start_native)
+        start_native
+        ;;
+    *)
+        usage
+        ;;
+esac

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+CMD="$1"
+
+PAC=_PACKAGE_
+USER=_USER_
+GROUP=_GROUP_
+
+if [ "$CMD" == "purge" ]; then
+  rm -rf /etc/service/${PAC}
+  rm -rf /etc/sv/${PAC}
+  rm -rf /var/log/sv/${PAC}
+
+  rm -rf /var/log/flipkart/ads/${PAC}
+  rm -rf /var/lib/${PAC}
+fi

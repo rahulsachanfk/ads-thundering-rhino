@@ -1,0 +1,120 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Bootstrap Example</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<h2 align="center" class="page-title">ProductTagging-AdGroup
+		Dashboard</h2>
+
+	<div class="container" align="center">
+
+
+		<div class="table-responsive" id="tdisplay">
+			<table id="productTable" class="table table-hover" width="100%">
+
+				<thead>
+					<tr>
+						<th>Product_id</th>
+						<th>Tagged</th>
+
+
+					</tr>
+				</thead>
+
+			</table>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+		(function($) {
+
+			function getProdID(campaignId) {
+				$
+						.ajax({
+							url : "/services/seller/listings/"
+									+ campaignId,
+							dataType : "json",
+							timeout : "3000",
+							async : false,
+							success : function(data) {
+								for ( var prdID in data) {
+
+									$('#productTable')
+											.append(
+													'<tr><td>'
+															+ data[prdID].product_id
+															+ '</td>'
+															+ '<td id =' +  data[prdID].product_id  + '></td></tr>')
+									getProdTagged(data[prdID].product_id, UpdatetaggedProducts);
+
+								}
+							
+
+							},
+
+							error : function(e) {
+								console.log(e.message);
+							}
+
+						});
+
+			}
+
+			function getProdTagged(prodId, fn) {
+				var URL = "/services/seller/tagging?prodID="
+						+ prodId;
+				$.getJSON(URL, fn);
+			}
+
+			function UpdatetaggedProducts(data) {
+
+				for ( var prdId in data) {
+					var tag = 0;
+
+					for (var i = 0; i < data[prdId]['listingDetail'].length; i++) {
+
+						if (data[prdId]['listingDetail'][i]['tagDetails']
+								.hasOwnProperty('igor.stores')) {
+
+							$('#' + data[prdId]['productId']).html("Tagged");
+							tag = 1;
+						}
+					}
+
+					if (tag == 0) {
+						$('#' + data[prdId]['productId']).html("Not Tagged");
+		
+					}
+				}
+
+			}
+
+			$(document).ready(function() {
+				var currenturl = window.location.href;
+				var queryStringArray = currenturl.split('?');
+				var queryStringParms = queryStringArray[1].split("&");
+				var queryStringval1 = queryStringParms[0].split("=");
+				var campaignId = queryStringval1[1];
+				getProdID(campaignId);
+			});
+
+		})($);
+	</script>
+</body>
+</html>
+
+
+</body>
+</html>

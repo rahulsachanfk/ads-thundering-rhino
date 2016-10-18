@@ -1,0 +1,88 @@
+body{
+	background-color: #cfcfcf;
+	font-family: 'Lucida Sans Unicode', helvetica, arial, sans-serif;
+}
+#header{
+    font-size: 25px;
+    color: #0F6CB2;
+    /* background-color: #0F6CB2; */
+    width: 100%;
+    /* padding: 10px; */
+    /* margin-bottom: 15px; */
+    text-align: center;
+}
+#rotationDiv{
+	width:95%;
+	margin: auto;
+	background-color: #fff;
+	padding: 4px;
+}
+#rotationTable, .tableHeading{
+	border: 1px solid #157ED2;
+	border-collapse: collapse;
+	color: #0F6CB2;
+
+	width: 33%;
+	
+	
+}
+#rotationTable{
+	width: 100%;
+
+}
+#plaTable,#brandTable,#fsaTable{
+	/*border: 1px solid #157ED2;*/
+	border-collapse: collapse;
+	width: 100%;
+	padding: 3px;
+
+}
+
+#plaTable tr:hover
+{
+    background:#0D324D!important;
+   
+   
+}
+#brandTable tr:hover
+{
+    background:#0D324D!important;
+   
+   
+}
+#fsaTable tr:hover
+{
+    background:#0D324D!important;
+   
+   
+}
+#plaTable ,#brandTable,#fsaTable,td{
+padding: 10px;
+	}
+#brandTable,#fsaTable{
+	margin-top: -320px;
+}
+#forDetail{
+	text-decoration: none;
+}
+#mId{
+	text-decoration: none;
+}
+#detailInfo
+{
+    display: none;
+    background:#454545;
+    color: #FFF;
+    padding: 10px;
+    border: 1px solid #0F6CB2;
+    width: 94%;
+    margin: auto;
+}
+#detailTable{
+   border-spacing: 3px;
+   border-collapse: separate;
+}
+.tableHeading{
+    background: #0F6CB2;
+color:#fff;
+}

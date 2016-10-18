@@ -1,0 +1,112 @@
+
+<html style="height: 100%">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+
+
+<link rel="stylesheet" href="dashboard-style-dark.css" />
+<link rel="stylesheet" href="admin-style-dark.css" />
+
+
+<title>Adding Dashborad Thundering Rhino</title>
+    <style>
+        .close-icon {
+            border:1px solid transparent;
+            background-color: transparent;
+            display: inline-block;
+            outline: 0;
+            cursor: pointer;
+            vertical-align: top;
+            float: right;
+            margin-right: 37%;
+        }
+        .close-icon:after {
+            content: "X";
+            display: block;
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            background-color: #FA9595;
+            z-index:1;
+            margin-left: -5px;
+            padding: 2px;
+            border-radius: 50%;
+
+            color: white;
+            font-weight: normal;
+            font-size: 10px;
+            box-shadow: 0 0 2px #E50F0F;
+            cursor: pointer;
+        }
+        #newModule{
+            margin-left: 29%;
+        }
+        #addModule{
+            margin-left: 137px;
+        }
+        .setAtPlace{
+            float: right;
+            margin-right: 42%;
+        }
+        /*#spanForAdd{*/
+            /*display: block;*/
+        /*}*/
+    </style>
+
+</head>
+<body >
+<form id ="insertform">
+
+    <!--<div class="logo" style="background-color: #333644; ">Add/Delete the Dashboard</div>-->
+<div class ="outer">
+ <label >
+ <input type="radio" name="change" value="Insert" id="Insert" checked="checked"  onclick="getResults(this)" />
+    Add dashboard
+</label>
+<label >
+ <input type="radio" name="Change" value="Delete" id="Delete"  onclick="getResults(this)" />
+     Delete dashboard
+</label>
+</div>
+ <div class="inner" id="innerDiv" >
+ <br>
+
+   <label> Business</label> <select class="setAtPlace"  onChange="createModuleDropDown(this)" style="width: 131px;" id="business"></select><br><br>
+   <label>Module</label><select class="setAtPlace"   style="width: 131px;"  id="module"></select>
+    <div id="addModule"> <input   type="checkbox"  id="add_module" name="add_mod" value="mod" onclick="addModule();"> <span id="spanForAdd" style="font-size: 9px;">add new</span></div>
+     <div> <input type="text" id="newModule"> <image id="removeAddBox" src="images/gtk_close.png" onclick="removeAddModule()"/> </div> <br>
+     <label class="ins">Key:</label>
+<input class="ins setAtPlace" type="text" id="Key" align="centre" />
+     <br><br>
+<label class="ins">URL:</label>
+<input class="ins setAtPlace" type="text" id="URL">
+<br><br>
+<label class="ins">Display:</label>
+<input class = "ins setAtPlace " type="text" id="Display" />
+<br><br>
+
+
+<input class="ins" type="submit" value="Submit" id="btn_s" />
+
+
+</div>
+
+    <div class="helpText">
+        Key should be unique. Prefix with team name. eg. adserver_db, adserver_app URL for the dashboard
+        Display name will be the one displayed on the sidebar. The sidebar is sorted by name.
+        So, Prefix team name and Dashboard type eg. Adserver Cosmos DB, Adserver Cosmos App, Adserver Alertz
+    </div>
+<table class= "inner" id="table" border="0" style="width:100%"></table>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+    </div>
+
+</form>
+<script type="text/javascript" src="admin_operation.js"></script>
+</body>
+
+</html>
+
+
+

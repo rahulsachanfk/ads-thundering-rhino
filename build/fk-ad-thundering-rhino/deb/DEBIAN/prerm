@@ -1,0 +1,20 @@
+#!/bin/bash -e
+PAC=_PACKAGE_
+USER=_USER_
+GROUP=_GROUP_
+CMD="$1"
+
+if [ "$CMD" == "remove" -o "$CMD" == "upgrade" ]; then
+  # Stop the service
+  echo "Stopping $PAC service"
+  /usr/bin/$PAC-admin stop || true
+fi
+
+if [ "$CMD" == "purge" ]; then
+  echo "Remove links and directories created during setup.";
+  rm -rf /usr/share/$PAC;
+  # Stop the service
+  echo "Stopping $PAC service";
+  /usr/bin/$PAC-admin stop || true
+  echo "Done.";
+fi

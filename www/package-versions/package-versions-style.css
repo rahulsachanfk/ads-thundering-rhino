@@ -1,0 +1,74 @@
+body {
+  background: #454545;
+  font-family: helvetica, arial;
+  color: #434343;
+
+  padding: 0;
+}
+
+span td table th {
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+.package {
+  width: 100%;
+  margin-bottom: 10px;
+  border-spacing: 0 8px;
+  border-collapse: separate;
+  border-color: gray;
+}
+
+.package th {
+  background: #E0CFC2;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 6px;
+  text-align: left;
+  color: black;
+}
+
+.package td.head {
+  width: 140px;
+  font-weight: bold;
+  border-right: 1px solid #E0CFC2;
+  color: #f5f0e5;
+}
+
+.package td {
+  padding: 0 8px;
+  vertical-align: middle;
+}
+
+.package td .server {
+  display: inline-block;
+  border: 1px solid #F5AD66;
+  background: #f5f0e5;
+  border-radius: 10px;
+  margin: 0 5px;
+  padding: 2px 8px;
+  color: #444;
+}
+
+th {
+  font-family: 1.2em;
+  color: white;
+  text-align: left;
+
+  margin-top: 1em;
+
+}
+
+table, th, tr, td {
+  border: 1px solid transparent;
+}
+
+th {
+  padding: 2em 1em 0.5em 1em;
+}
+
+td {
+  text-align: left;
+  padding: 0.5em 0.15em;
+}

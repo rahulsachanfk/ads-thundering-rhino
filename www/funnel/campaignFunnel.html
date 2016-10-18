@@ -1,0 +1,61 @@
+<html>
+   <head>
+      <title>
+         Campaign Funnel Report
+      </title>
+      <link rel="stylesheet" type="text/css" href="campaignFunnelStyle.css">
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js" ></script>
+      <script type="text/javascript" src="campaignFunnelJS.js" ></script>
+      
+      <script src="zingchart.min.js"></script>
+
+   
+
+<link rel="stylesheet" type="text/css" href="jquery-ui.min.css">
+<script src= "jquery-ui.min.js"></script>
+   </head>
+   <body>
+      <div id="headerBox">
+         <div id="titleBox">BRAND/DSP Campaign Funnel Report</div>
+      </div>
+      <div id ="mainBox">
+         <table  id="inputTable">
+            <tr class="tableRow">
+               <td class="heading">Cmp Id </td>
+               <td class ="headingValue"><input  type="text"   class="inputValue"  id="cmpId" />  </td>
+            </tr>
+            <tr class="tableRow">
+               <td class="heading">Aff Id/Exch Id</td>
+               <td class ="headingValue" ><input   type="text"     class="inputValue"  id="affIdOrExchId" list="ids"> 
+               <datalist id="ids">
+  
+  
+</datalist>  </td>
+            </tr >
+            <tr class="tableRow">
+               <td class="heading"><sup style="color:red;">*</sup>Date </td>
+               <td class ="headingValue" ><input  type="text"  class="inputValue"  id="dateId"/>  </td>
+            </tr>
+            <tr >
+               <td class="submitRow"><input  id="submitButton" onclick="inputValidation()" type="submit" value="SUBMIT"/>  </td>
+            </tr>
+         </table>
+      </div>
+      <div id="alertMessage">
+      </div>
+      <div id="otherInfo">
+      
+      <div id="divForUU"> </div>
+     <div id="nodeContent"></div>
+     </div>
+     
+
+               <div id="myChart"></div>
+
+      
+    
+   
+
+
+   </body>
+</html>

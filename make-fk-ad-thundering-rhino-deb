@@ -1,0 +1,84 @@
+#!/bin/bash -e
+echo "Starting build"
+
+function die()
+{
+    echo "ERROR: $1" >&2
+    echo "Aborting." >&2
+    exit 1
+}
+
+[ -n "$LOCAL_DIR" ]	|| die "No base dir specified."
+[ -n "$TARGET" ]	|| die "No target environment (eng, sb, nm etc.) specified."
+[ -n "$PACKAGE" ]	|| die "No package name specified."
+[ -d "$LOCAL_DIR" ]	|| die "Base dir '$LOCAL_DIR' does not exist."
+
+case "$TARGET" in
+        local) ENV=local;;
+        nm) ENV=nm;;
+        stagech) ENV=stagech;;
+esac
+[ -z "$ENV" ] && die "Invalid target: $TARGET"
+
+export PAC_USER="$PACKAGE"
+export PAC_GROUP="fk-w3"
+export PAC_UID=3101
+export PAC_GID=3000
+
+replacePlaceHolders() {
+    file="$1"
+    sed -i -e "s/_PACKAGE_/$PACKAGE/g" $file
+    sed -i -e "s/_GROUP_/$PAC_GROUP/g" $file
+    sed -i -e "s/_USER_/$PAC_USER/g" $file
+    sed -i -e "s/_ENV_/$ENV/g" $file
+    sed -i -e "s/_GID_/$PAC_GID/g" $file
+    sed -i -e "s/_UID_/$PAC_UID/g" $file
+}
+
+cd $LOCAL_DIR
+
+BUILD_DIR=$LOCAL_DIR/build/$PACKAGE
+DEB_DIR=$LOCAL_DIR/deb
+PROJ_DIR="$LOCAL_DIR/services"
+
+# Java 8
+echo "Setting Java Home to Java 8"
+if [ -x "/usr/libexec/java_home" ] ; then
+    export JAVA_HOME=$(/usr/libexec/java_home -v 1.8) #MAC_ENV
+else
+    export JAVA_HOME=/usr/lib/jvm/j2sdk1.8-oracle #*NIX ENV
+fi
+
+if [ ! -x ${JAVA_HOME}/bin/java ] ; then
+    die "Please install java 1.8 @ $JAVA_HOME"
+fi
+
+# add maven options
+cd ${LOCAL_DIR}/services;
+MVN_CMD=${MVN_CMD:-/usr/share/fk-ops-maven2/bin/mvn}
+
+${MVN_CMD} clean install -DskipTests -P $ENV
+[ $? -ne 0 ] && die "Build failure"
+
+# replace constants in debian and run files
+replacePlaceHolders "${BUILD_DIR}/deb/DEBIAN/prerm"
+replacePlaceHolders "${BUILD_DIR}/deb/DEBIAN/postrm"
+replacePlaceHolders "${BUILD_DIR}/deb/DEBIAN/postinst"
+replacePlaceHolders "${BUILD_DIR}/deb/DEBIAN/control"
+replacePlaceHolders "${BUILD_DIR}/deploy/etc/default/${PACKAGE}"
+replacePlaceHolders "${BUILD_DIR}/deploy/usr/bin/${PACKAGE}-admin"
+replacePlaceHolders "${BUILD_DIR}/deploy/usr/share/${PACKAGE}/bin/${PACKAGE}-run.sh"
+
+# Copy all required files to proper locations within the deb package
+mkdir -p $DEB_DIR/usr/share/$PACKAGE/lib
+cp -r "$BUILD_DIR"/deb/DEBIAN "$DEB_DIR"
+
+cp -r "$BUILD_DIR"/deploy/* "$DEB_DIR"/
+
+cp -r "$PROJ_DIR"/target/*services*.jar "$DEB_DIR"/usr/share/$PACKAGE/lib
+
+mkdir "$DEB_DIR"/etc/$PACKAGE
+cp -r "$PROJ_DIR"/services-api.yml "$DEB_DIR"/etc/$PACKAGE/
+
+mkdir -p $DEB_DIR/usr/share/$PACKAGE/www
+cd ../www; cp -r `/bin/ls -1 . ` $DEB_DIR/usr/share/$PACKAGE/www; cd ..

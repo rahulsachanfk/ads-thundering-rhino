@@ -1,0 +1,49 @@
+body {
+  background: #454545;
+  font-family: helvetica, arial;
+  color: #434343;
+
+  padding: 0;
+}
+
+.green {
+  background-color: #07B23F;
+  white-space:nowrap
+}
+
+.orange {
+    background-color: #e38d13;
+}
+.red {
+  background-color: #FF1813;
+  color: #222222;
+  white-space:nowrap
+}
+
+.orange{
+  background-color: #FF8000;
+  color: #222222;
+  white-space:nowrap
+}
+
+th {
+  font-size: 1.2em;
+  color: white;
+  text-align: left;
+
+  margin-top: 1em;
+
+}
+
+table, th, tr, td {
+  border: 0px solid transparent;
+}
+
+th {
+  padding: 2em 1em 0.5em 1em;
+}
+
+td {
+  text-align: left;
+  padding: 0.5em 0.15em;
+}

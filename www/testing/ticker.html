@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<meta charset="UTF-8">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<title>PLA Party Meter</title>
+<script type="text/javascript"  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<link rel="stylesheet"  href="lib/bootstrap/css/bootstrap.css">
+
+<style>
+    .header{
+        color:white;
+        font-size:30px;
+        font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    }
+
+    .text{
+        color:white;
+        font-size:50px;
+        font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    }
+
+    .textM{
+        color:white;
+        font-size:30px;
+        font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    }
+
+    .box{
+        padding:7px;
+    }
+
+
+</style>
+
+<script>
+    $(document).ready(
+            function() {
+                $.ajaxSetup({ cache: false });
+                setInterval(function() {
+                    $('#engagements').load('http://10.47.3.204/services/ticker/engagements');
+                    $('#last_24_hours').load('http://10.47.3.204/services/ticker/last_24hrs_engagements');
+                }, 2500);
+            });
+
+    function brands(){
+        var yes = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
+        var stime = yes.getFullYear() + "-" + (yes.getMonth()+1)  + "-" + yes.getDate() + "+" + yes.getHours() + ":" +yes.getMinutes() + ":" +yes.getSeconds();
+
+        $('#bl24hrsvws').load('http://10.33.10.193:25916/services/ticker/appsumintervalviews?starttime='+stime,function(data){
+            var views= JSON.parse(data).metric;
+            views=views.toString();
+            var lastThree = views.substring(views.length-3);
+            var otherNumbers = views.substring(0,views.length-3);
+            if(otherNumbers != '')
+                lastThree = ',' + lastThree;
+            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+            $('#bl24hrsvws').html(res);});
+
+        $('#bsviews').load('http://10.33.10.193:25916/services/ticker/apptotalviews',function(data){
+            var views= JSON.parse(data).metric;
+            views=views.toString();
+            var lastThree = views.substring(views.length-3);
+            var otherNumbers = views.substring(0,views.length-3);
+            if(otherNumbers != '')
+                lastThree = ',' + lastThree;
+            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+            $('#bsviews').html(res);});
+
+        $('#acrate').load('http://10.33.10.193:25916/services/ticker/apptotalactionrate',function(data){
+            var acrate= JSON.parse(data).metric;
+            acrate= Math.round(acrate * 100)/100;
+            $('#acrate').html(acrate + '%');});
+
+        $('#l24hracrate').load('http://10.33.10.193:25916/services/ticker/appsumintervalactionrate?starttime='+stime,function(data){
+            var acrate24= JSON.parse(data).metric;
+            acrate24= Math.round(acrate24 * 100)/100;
+            $('#l24hracrate').html(acrate24 +'%');});
+
+        $('#engrate').load('http://10.33.10.193:25916/services/ticker/apptotalengrate',function(data){
+            var engrate= JSON.parse(data).metric;
+            engrate= Math.round(engrate * 100)/100;
+            $('#engrate').html(engrate + '%');});
+
+        $('#l24hrengrate').load('http://10.33.10.193:25916/services/ticker/appsumintervalengrate?starttime='+stime,function(data){
+            var engrate24= JSON.parse(data).metric;
+            engrate24= Math.round(engrate24 * 100)/100;
+            $('#l24hrengrate').html(engrate24 + '%');});
+
+        $('#dacrate').load('http://10.33.10.193:25916/services/ticker/desktoptotalactionrate',function(data){
+            var dacrate= JSON.parse(data).metric;
+            dacrate= Math.round(dacrate * 100)/100;
+            $('#dacrate').html(dacrate + '%'); });
+
+        $('#l24dhracrate').load('http://10.33.10.193:25916/services/ticker/desktopsumintervalactionrate?starttime='+stime,function(data){
+            var dacrate24= JSON.parse(data).metric;
+            dacrate24= Math.round(dacrate24 * 100)/100;
+            $('#l24dhracrate').html(dacrate24 + '%');});
+        $('#hpwviews').load('http://10.33.10.193:25916/services/ticker/apptotalHPWviews',function(data){
+            var views= JSON.parse(data).metric;
+            views=views.toString();
+            var lastThree = views.substring(views.length-3);
+            var otherNumbers = views.substring(0,views.length-3);
+            if(otherNumbers != '')
+                lastThree = ',' + lastThree;
+            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+            $('#hpwviews').html(res);});
+
+        $('#hpw24hrsvws').load('http://10.33.10.193:25916/services/ticker/appsumintervalHPWviews?starttime='+stime,function(data){
+            var views= JSON.parse(data).metric;
+            views=views.toString();
+            var lastThree = views.substring(views.length-3);
+            var otherNumbers = views.substring(0,views.length-3);
+            if(otherNumbers != '')
+                lastThree = ',' + lastThree;
+            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+            $('#hpw24hrsvws').html(res);});
+
+        $('#hpwacrate').load('http://10.33.10.193:25916/services/ticker/apptotalHPWactionrate',function(data){
+            var acrate= JSON.parse(data).metric;
+            acrate= Math.round(acrate * 100)/100;
+            $('#hpwacrate').html(acrate + '%');});
+
+        $('#l24hhpwAracrate').load('http://10.33.10.193:25916/services/ticker/appsumintervalHPWactionrate?starttime='+stime,function(data){
+            var acrate24= JSON.parse(data).metric;
+            acrate24= Math.round(acrate24 * 100)/100;
+            $('#l24hhpwAracrate').html(acrate24 +'%');});
+    }
+
+    $(document).ready(
+            function() {
+                $.ajaxSetup({ cache: false });
+                setInterval(brands, 30*60*1000);
+                brands()
+            });
+</script>
+
+</head>
+
+
+
+
+<body style="background:black">
+
+
+<div class="container" style="margin-top: 50px">
+    <div class="row box" style="border: dotted;border-color: white" >
+
+        <div class="row">
+            <div class="col-md-6 header">Actions</div>
+            <div class="col-md-6">
+                <div class="pull-right header">PLA</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 text">
+                <span id="engagements"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right text"><span style='font-size:15px; color:#3D7A99;padding-right:20px;'>Last 24 hours </span><span id="last_24_hours"></span></div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    </br>
+
+    <div class="row box" style="border: dotted;border-color: white">
+        <div class="row " >
+
+            <div class="col-md-6 header">Views</div>
+            <div class="col-md-6">
+                <div class="pull-right header">Brand Story App</div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 ">
+                <span id="bsviews" class="text"></span>
+
+            </div>
+
+            <div class="col-md-6">
+                <div class="pull-right  text"><span style='font-size:15px; color:#3D7A99;padding-right:20px;'>Last 24 hours </span> <span id="bl24hrsvws"></span></div>
+            </div>
+
+
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6  textM">
+                <div class="textM">
+                    <span style='font-size:20px; color:#3D7A99;padding-right:20px;'>Action Rate</span> <span id="acrate"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6 ">
+                <div class="textM pull-right">
+                    <span style='font-size:20px; color:#3D7A99;padding-right:20px;'>Last 24 hours AR</span> <span id="l24hracrate"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6  textM">
+                <div class="textM">
+                    <span style='font-size:20px; color:#3D7A99;padding-right:20px;'>Engagement Rate</span> <span id="engrate"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6  textM">
+                <div class="textM pull-right">
+                    <span style='font-size:20px; color:#3D7A99;padding-right:20px;'>Last 24 hours ER</span> <span id="l24hrengrate"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row box" style="border: dotted;border-color: white">
+        <div class="row " >
+
+            <div class="col-md-6 header">Views</div>
+            <div class="col-md-6">
+                <div class="pull-right header">HPW App</div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 ">
+                <span id="hpwviews" class="text"></span>
+
+            </div>
+
+            <div class="col-md-6">
+                <div class="pull-right  text"><span style='font-size:20px; color:#3D7A99;padding-right:20px;'>Last 24 hours </span> <span id="hpw24hrsvws"></span></div>
+            </div>
+
+
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6  textM">
+                <div class="textM">
+                    <span style='font-size:20px; color:#3D7A99;padding-right:20px;'>Action Rate</span> <span id="hpwacrate"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6 ">
+                <div class="textM pull-right">
+                    <span style='font-size:20px; color:#3D7A99;padding-right:20px;'>Last 24 hours AR</span> <span id="l24hhpwAracrate"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row box" style="border: dotted;border-color: white">
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="pull-right header">Brand Desktop</div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="text"><span style="font-size:25px; color:#3D7A99;padding-right:20px;"> Action Rate </span> <span id="dacrate"></span></div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="pull-right  text"><span style="font-size:25px; color:#3D7A99;padding-right:20px;">Last 24 hours AR</span> <span id="l24dhracrate"></span></div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+<script>
+
+
+
+</script>
+
+
+</html>
+

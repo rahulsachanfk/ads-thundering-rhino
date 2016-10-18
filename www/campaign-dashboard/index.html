@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../dashboard-style-light.css"/>
+    <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <meta charset="UTF-8">
+    <title>Ad Platform Campaign Dashboard</title>
+</head>
+<body>
+<h1 class="page-title">Campaigns Dashboard</h1>
+
+<div class="main">
+    <div class="main-content">
+      <span class="right">
+        <input type="text" id="campaign-id-input" placeholder="campaign id">
+        <input type="submit" id="campaign-submit" value="GO">
+      </span>
+
+        <h2 id="campaign-title"></h2>
+
+        <div class="section">
+            <span class="label">Campaign ID:</span>
+            <span id="campaign-id" class="value"></span>
+        </div>
+        <div class="section">
+            <span class="label">Seller ID:</span>
+            <span id="seller-id" class="value"></span>
+        </div>
+      	
+
+        <div class="section">
+            <span class="label">Campaign Budget:</span>
+            <span id="campaign-budget" class="value"></span>&nbsp; <span  id="campaign-budget-currency"></span>
+        </div>
+        <div class="section">
+            <span class="label">Campaign Start:</span>
+            <span id="campaign-start" class="value"></span>
+        </div>
+        <div class="section">
+            <span class="label">Campaign End:</span>
+            <span id="campaign-end" class="value"></span>
+        </div>
+
+        <div class="section">
+            <span class="label">Campaign Status:</span>
+            <span id="campaign-status" class="value"></span>
+        </div>
+    </div>
+
+    <div class="main-header">Performance</div>
+    <div class="main-content">
+        <div class="section">
+            <span class="label">Views:</span>
+            <span id="views" class="value"></span>
+        </div>
+        <div class="section">
+            <span class="label">Actions:</span>
+            <span id="actions" class="value"></span>
+        </div>
+        <div class="section">
+            <span class="label">Conversions:</span>
+            <span id="conversions" class="value"></span>
+        </div>
+        
+        <div class="section">
+            <span class="label">Consumed Budget:</span>
+            <span id="budget" class="value"></span>
+        </div>
+        
+    </div>
+   
+   <div class="table-header">Ad-Groups</div> 
+   <div class="table-content">
+        <table >
+        <tr>
+          <td id =  'mainTable'>
+            </td>
+        </tr>
+      </table>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+
+
+<link rel="stylesheet" href="dashboard-style-dark.css" />
+<link rel="stylesheet" href="admin-style-dark.css" />
+
+<title>Adding Dashborad Thundering Rhino</title>
+
+</head>
+<body>
+<form id ="insertform">
+<div>
+
+<div class="logo">Thundering Rhino</div>
+<div class ="outer">
+ <label >
+ <input type="radio" name="change" value="Insert" id="Insert" checked="checked"  onclick="getResults(this)" />
+    Insert
+</label>
+<label >
+ <input type="radio" name="Change" value="Delete" id="Delete"  onclick="getResults(this)" />
+     Delete
+</label>
+</div>
+ <div class="inner">
+ <br>
+<label class="ins">Key:</label>    
+<input class="ins" type="text" id="Key" align="centre" />
+<br>
+<label class="ins">URL:</label>
+<input class="ins" type="text" id="URL">
+<br>
+<label class="ins">Display:</label>
+<input class = "ins" type="text" id="Display" />
+<br>
+
+<input class="ins" type="submit" value="Submit" id="btn_s" />
+
+
+</div>
+
+    <div class="helpText"> <br /><br /><br />
+        Key should be unique. Prefix with team name. eg. adserver_db, adserver_app <br />
+        URL for the dashboard <br/>
+        Display name will be the one displayed on the sidebar. The sidebar is sorted by name.
+        So, Prefix team name and Dashboard type eg. Adserver Cosmos DB, Adserver Cosmos App, Adserver Alertz<br />
+    </div>
+<table class= "inner" id="table" border="0" style="width:100%"></table>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<div class="logo">Add/Delete the Dashboard</div>
+    </div>
+
+</form>
+<script type="text/javascript" src="admin_operation.js"></script>
+</body>
+
+</html>
+
+
+

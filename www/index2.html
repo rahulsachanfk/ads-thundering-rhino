@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="dashboard-style.css"/>
+    <title>Thundering Rhino - Ad Platform System Dashboard</title>
+</head>
+<body>
+    <div id="sidebar">
+        <img src="images/ThunderingRhinoLogo.jpg" id="logo" />
+        <div class="separator"></div>
+        <div class="category">Status</div>
+        <a class="link" href="rotation-dashboard/index.html" target="main">Rotation Status</a>
+        <a class="link" href="package-versions/index.html" target="main">Package Versions</a>
+        <a class="link" href="https://jira.corp.flipkart.com/browse/FLPONCALL-55" target="_blank">Deployment Status</a>
+        <a class="link" >Machine health</a>
+        <div class="separator"></div>
+        <div class="category">Monitoring</div>
+        <a class="link" href="http://cosmos.nm.flipkart.com/#/dashboard/db/AdService%20Dashboard%20Aggregate" target="main">Aggregate Dashboard</a>
+        <a class="link" href="http://cosmos.nm.flipkart.com/#/dashboard/db/Product%20Ads%20Dashboard" target="main">Product Ads Dashboard</a>
+        <a class="link" href="http://cosmos.nm.flipkart.com/index.html#/dashboard/db/flap-ads-db-1?service=flap-ads-db" target="main">DB Dashboard</a>
+        <a class="link" href="http://cosmos.nm.flipkart.com/#/dashboard/db/Ads%20Delivery%20Funnel%20Dashboard" target="main">Ads Delivery Funnel Dashboard</a>
+        <a class="link" href="http://cosmos.nm.flipkart.com/#/dashboard/db/Revive%20API%20Dashboard" target="main">Revive API Dashboard</a>
+        <a class="link" href="http://cosmos.nm.flipkart.com/#/dashboard/db/Mantis%20Dashboard" target="main">Mantis Dashboard</a>
+        <a class="link" href="http://flap-product-service-bm1.nm.flipkart.com:25024/cluster-dashboard" target="main">NPS Dashboard</a>
+        <a class="link" href="http://fk-log-svc.nm.flipkart.com/index.html#/dashboard/elasticsearch/Flap" target="main">Log SVC Dashboard</a>
+        <a class="link" href="http://cosmos.nm.flipkart.com/#/dashboard/db/Flap%20UserTargeting" target="main">User Insight</a>
+        <div class="separator"></div>
+        <div class="category">Admin</div>
+        <a class="link" href="https://jenkins-cid-master.nm.flipkart.com/view/ad-platform/" target="_blank">Jenkins Deploy</a>
+        <a class="link" href="campaign-dashboard/index.html" target="main">Campaigns Dashboard</a>
+        <a class="link" href="http://bigfoot-1.ch.flipkart.com:9000/dashboard/index/2200" target="_blank">Sonar Dashboard</a>
+        <div class="separator"></div>
+        <!--Create a new Page for Documentation links and give the link for that here-->
+        <!--<div class="category">Documentation</div>-->
+        <!--<a class="link" href="http://devtools-2.corp.flipkart.com/index.php/Main_Page" target="_blank">Wiki</a>-->
+        <!--<a class="link" href="http://w3-ads-adserve8.nm.flipkart.com/ad/oogway/" target="main">Oogway API Documentation</a>-->
+        <!--<a class="link" href="http://w3-ads-adserve8.nm.flipkart.com/ad/revive-adserver/" target="main">Revive API Documentation</a>-->
+    </div>
+    <iframe id="mainContent" src="rotation-dashboard/index.html" name="main"></iframe>
+</body>
+</html>

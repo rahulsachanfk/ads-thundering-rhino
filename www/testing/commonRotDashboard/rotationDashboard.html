@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link rel="stylesheet" type="text/css" href="rotationDashboard.css">	
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="rotation-in-style.css"/>
+
+
+</head>
+<body >
+<div id="header">Rotation Dashboard</div>
+<div id="detailInfo">
+<span id='close' style='cursor:pointer;'  onclick='closeDetailDiv();'>x</span>
+   <table id="detailTable" style="width:100%">
+        <tr>
+          <td id =  'mainTable'>
+            </td>
+        </tr>
+      </table>
+</div>
+<div id="rotationDiv">
+	
+<table id="rotationTable">
+  <tr>
+    <th class="tableHeading">PLA</th>
+    <th class="tableHeading">BRAND</th>		
+    <th class="tableHeading">FSA</th>
+  </tr>
+  <tr>
+  	<td><table id="plaTable"></table></td>
+  	<td><table id="brandTable"></table></td>
+  	<td><table id="fsaTable"></table></td>
+  </tr>
+</table>
+
+</div>
+</div>
+
+<script src="rotationDashboard.js"></script>
+<script src="rotationStatus.js"></script>
+</body>
+</html>
+
+

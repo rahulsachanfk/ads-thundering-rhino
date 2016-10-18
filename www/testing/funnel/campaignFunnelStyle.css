@@ -1,0 +1,152 @@
+body{
+  background:#ffffff;
+  margin:0;
+  box-sizing: border-box;
+}
+div#pop-up {
+    display: none;
+    position: absolute;
+    width: 320px;
+    padding: 10px;
+    background: #eeeeee;
+    color: #000000;
+    border: 1px solid #1a1a1a;
+    font-size: 90%;
+}
+#headerBox {
+    width: 100%;
+    height: 8%;
+    background: #006CB4;
+    padding-top: 8px;
+}
+#titleBox {
+    margin: 0 auto;
+    width: 40%;
+    height: 100%;
+    background: #006CB4;
+    color: #ffffff;
+    font-size: 25px;
+    padding-top: 0px;
+    font-family: "Monotype Corsiva", verdana, Georgia, Serif;
+}
+#mainBox {
+    margin: 10px auto;
+    border-radius: 10px;
+    background: #ffffff;
+    width: 35%;
+    height: 25%;
+    border: 1px solid #006CB4;
+    padding: 10px;
+
+}
+
+ #inputTable {
+    width: 100% !important;
+    height: 100% !important;
+    table-layout:fixed;
+}
+
+.heading {
+    color: #0e5a7e;
+    width: 40%;
+
+ 
+    font-style: italic;
+      white-space: normal; /* Only needed when it's set differntly somewhere else */
+    word-wrap: break-word;
+    font-family: "Monotype Corsiva", verdana, Georgia, Serif;
+}
+.headingValue {
+ 
+    border-radius: 1px;
+      white-space: normal; /* Only needed when it's set differntly somewhere else */
+    word-wrap: break-word;
+   width: 70%;
+}
+.tableRow{
+  height: 25%;
+}
+.submitRow {
+      width: 100%;
+      margin-top: 5px;
+
+    
+}
+#submitButton {
+    background-color: #354D9F;
+    border-radius: 6px;
+    color: #FFFFFF;
+    margin-left: 150px;
+    padding: 4px 10px 4px 10px;
+   
+}
+.inputValue {
+   
+    width: 50%;
+    border-radius: 3px;
+    border: 1px solid #354D9F;
+    font-size: 13px;
+    color: #5F5F5F;
+}
+#alertMessage{
+    margin-top: 5px;
+    width: 35%;
+    margin: auto;
+    color: red;
+
+}
+#myChart{
+    width: 60%;
+    margin-left: 3%;
+    float: left;
+   
+}
+
+
+
+
+#otherInfo{
+    width: 18%;
+    margin-left: 15px;
+    padding: 3px;
+    float: left;
+
+}
+
+#divForUU{
+    border: 2px solid #0e5a7e;
+    width: 100%;
+    height: 10%;
+    padding:10px;
+    color: #0e5a7e;;
+    font-size: 17px;
+    font-family: arial;
+
+    border-radius: 14px;
+
+
+}
+#nodeContent{
+    border: 2px solid #0e5a7e;
+    width: 100%;
+    height: 25%;   
+    float: left;
+    padding:10px;
+    color: #0e5a7e;;
+    font-size: 14px;
+    font-family: arial;
+
+    border-radius: 14px;
+    margin-top: 15px;
+   
+
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}

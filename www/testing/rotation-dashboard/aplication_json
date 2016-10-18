@@ -1,0 +1,154 @@
+/**
+ * Created by suchi.sethi on 21/08/15.
+ */
+
+
+function getappinfo(json)
+{
+return json;
+}
+var appinput =
+{
+    "clusters": [
+        {
+            "prod-ads-madison": [
+                {
+                    "svc": [
+                        {
+                            "port": "25947",
+                            "url": "healthcheck"
+                        }
+                    ],
+                    "ui": [
+                        {
+                            "port": "25947",
+                            "url": "healthcheck"
+                        }
+                    ]
+                }
+            ],
+            "prod-ads-campaign-mgmt": [
+                {
+                    "svc": [
+                        {
+                            "port": "25904",
+                            "url": "elb-healthcheck"
+                        }
+                    ]
+                }
+            ],
+            "prod-ads-azkaban": [
+                {
+                    "svc": [
+                        {
+                            "port": "25905",
+                            "url": "healthcheck"
+                        }
+                    ]
+                }
+            ],
+            "flap-infra-pla": [
+                {
+                    "nps2": [
+                        {
+                            "port": "8190",
+                            "url": "elb-healthcheck"
+                        }
+                    ],
+                    "api4": [
+                        {
+                            "port": "25943",
+                            "url": "elb-healthcheck"
+                        }
+                    ]
+                }
+            ],
+            "fk-ad-auctioning": [
+                {
+                    "prod": [
+                        {
+                            "port": "25906",
+                            "url": "elb-healthcheck"
+                        }
+                    ]
+                }
+            ],
+            "prod-fk-ad-adserver": [
+                {
+                    "svc": [
+                        {
+                            "port": "25937",
+                            "url": "elb-healthcheck"
+                        }
+                    ]
+                }
+            ],
+            "prod-fk-ad-tracker": [
+                {
+                    "svc": [
+                        {
+                            "port": "25940",
+                            "url": "elb-healthcheck"
+                        }
+                    ]
+                }
+            ],
+            "prod-fk-ad-identity": [
+                {
+                    "svc": [
+                        {
+                            "port": "25928",
+                            "url": "elb-healthcheck"
+                        }
+                    ]
+                }
+            ],
+            "fk-ad-data-report-api": [
+                {
+                    "fk-ad-data-report-api": [
+                        {
+                            "port": "25934",
+                            "url": "elb-healthcheck"
+                        }
+                    ]
+                }
+            ],
+            "fk-ad-data-schema-repo": [
+                {
+                    "prod": [
+                        {
+                            "port": "25931",
+                            "url": "elb-healthcheck"
+                        }
+                    ]
+                }
+            ],
+            "sherlock-app-ads": [
+                {
+                    "ads-grp": [
+                        {
+                            "port": "25280",
+                            "url": "elb-healthcheck"
+                        }
+                    ]
+                }
+            ],
+            "prod-ad-pricing": [
+                {
+                    "plutussvc": [
+                        {
+                            "port": "25920",
+                            "url": "elb-healthcheck"
+                        }
+                    ],
+                    "mapsvc": [
+                        {
+                            "port": "25937",
+                            "url": "elb-healthcheck"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

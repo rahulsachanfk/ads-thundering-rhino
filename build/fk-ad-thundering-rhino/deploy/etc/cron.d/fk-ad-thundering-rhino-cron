@@ -1,0 +1,7 @@
+#0 0 1 * * * fk-ad-thundering-rhino /usr/share/fk-ad-thundering-rhino/bin/tickerjob.sh >> /var/log/flipkart/flap/fk-ad-thundering-rhino-services/tickerjob.log
+
+0 6,9,12,15 * * * fk-ad-thundering-rhino /usr/share/fk-ad-thundering-rhino/bin/consumeddata.sh >> /var/log/flipkart/flap/fk-ad-thundering-rhino-services/consumeddata.log
+
+0 9 * * * fk-ad-thundering-rhino /usr/share/fk-ad-thundering-rhino/bin/weekly-consumption-report.sh >> /var/log/flipkart/flap/fk-ad-thundering-rhino-services/weekly-consumption.log
+
+0 9 2 * * fk-ad-thundering-rhino /usr/share/fk-ad-thundering-rhino/bin/emc.sh >> /var/log/flipkart/flap/fk-ad-thundering-rhino-services/emc.log

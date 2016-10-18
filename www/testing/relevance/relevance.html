@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<title>SP-CMS Product Tagging Status</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel='shortcut icon' href="../images/favicon-b994e296.ico" />
+
+
+
+<link href="../lib/bootstrap/css/bootstrap.css" rel="stylesheet"
+	type="text/css" />
+<link href="../lib/bootstrap/css/bootstrap-theme.css" rel="stylesheet"
+	type="text/css" />
+<link rel="stylesheet"
+	href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css" />
+
+
+<script src="../lib/bootstrap/js/ie-emulation-modes-warning.js"></script>
+
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+
+</head>
+
+<body>
+
+
+
+	<div class="container">
+		<div class="page-header">
+			<h2>Tagging Status</h2>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<h4>Seller ID:</h4>
+			</div>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="sellerID">
+			</div>
+			<div class="col-sm-1">
+				<button class="btn btn-default" type="submit" id="searchbtn">
+					<i class="glyphicon glyphicon-search"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div class="container" align="center">
+
+
+		<div class="table-responsive" id="tdisplay" style="display: none">
+			<table id="sproductTable" class="table table-hover" width="100%">
+
+				<thead>
+					<tr>
+						<th>Campaign_id</th>
+						<th>Name</th>
+						<th>Status</th>
+
+					</tr>
+				</thead>
+
+			</table>
+		</div>
+
+	</div>
+
+
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="../lib/bootstrap/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#searchbtn').click(function(e) {
+				$("#sproductTable tr").parent().remove();
+				showTable();
+				var sellerId = $("#sellerID").val();
+
+				$.ajax({
+
+					url : "/services/seller/" + sellerId,
+					cache : false,
+					dataType : "json",
+					timeout : "3000",
+					type : 'GET',
+					asyc : false,
+					success : function(data) {
+						getCampID(data)
+					},
+					error : function(e) {
+						console.log(e.message);
+					}
+				});
+			});
+
+		});
+
+		function getCampID(adID) {
+			$.ajax({
+				url : "/services/seller/campaign/" + adID,
+				dataType : "json",
+				timeout : "3000",
+				success : function(data) {
+					if(data.length === 0) {
+						alert("None of the Campaign is in running state for this Seller");
+						
+					}
+					for ( var camp in data) {
+						
+					
+						$('#sproductTable').append(
+								'<tr onclick=location.href='
+										+ '"productTagged.html?campainID='
+										+ data[camp].campaign_id + '"'
+										+ '><td>' + data[camp].campaign_id
+										+ '</td>' + '<td>' + data[camp].name
+										+ '</td>' + '<td>' + data[camp].status
+										+ '</td></a></tr>')
+
+					}
+
+				}
+			});
+
+		}
+
+		function showTable() {
+			$("#tdisplay").show();
+		}
+
+		
+	
+	</script>
+
+
+</body>
+
+</html>

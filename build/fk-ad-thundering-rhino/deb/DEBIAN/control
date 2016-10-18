@@ -1,0 +1,8 @@
+Package: _PACKAGE_
+Version: 1._VERSION_
+Section: flipkart/ad
+Priority: standard
+Depends: fk-ops-nginx-bin-squeeze | nginx, oracle-j2sdk1.8, fk-ops-servicebuilder, redis-server, fk-config-service-confd
+Architecture: all
+Maintainer: Advertising Platform support Team Team <ad-group-pse@flipkart.com>
+Description: Advertising Platform's System administration and Monitoring console

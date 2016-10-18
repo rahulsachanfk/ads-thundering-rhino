@@ -1,0 +1,180 @@
+{
+
+ "clusters" : [
+
+        {
+
+    "prod-ads-madison": [
+    {
+    		"svc": [
+    			{
+           			"port": "25947",
+           			"url": "healthcheck",
+           			"threshold": 10,
+           		}
+           		]
+
+    }
+    ],
+    "prod-ads-campaign-mgmt": [
+    {
+    		"svc": [
+    			{
+           			"port": "25904",
+           			"url": "elb-healthcheck"
+           			"threshold": 2,
+           		}
+           		]
+    }
+    ],
+
+    "prod-ads-azkaban": [
+    {
+    		"svc": [
+    			{
+           			"port": "25905",
+           			"url": "elb-healthcheck"
+           			"threshold": 4,
+           		}
+           		]
+
+    }
+    ],
+
+    "flap-infra-pla": [
+    {
+
+           	"nps2": [
+           		{
+           			"port": "8190",
+           			"url": "elb-healthcheck"
+           			"threshold": 5,
+           		}
+           		],
+           	"api4": [
+           		{
+           			"port": "25943",
+           			"url": "elb-healthcheck"
+           			"threshold": 1,
+           		}
+           		]
+
+
+    }
+    ],
+
+        "fk-ad-auctioning": [
+    {
+
+           	"prod": [
+           		{
+           			"port": "25906",
+           			"url": "elb-healthcheck"
+           			"threshold": 20,
+           		}
+           		]
+    }
+    ],
+
+           "prod-fk-ad-adserver": [
+    {
+
+           	"svc": [
+           		{
+           			"port": "25937",
+           			"url": "elb-healthcheck"
+           			"threshold": 3,
+           		}
+           		]
+    }
+    ],
+
+            "prod-fk-ad-tracker": [
+     {
+
+             "svc": [
+               	{
+               		"port": "25940",
+               		"url": "elb-healthcheck"
+               		"threshold": 3,
+                 	}
+               	]
+     }
+     ],
+
+                       "prod-fk-ad-identity": [
+                {
+
+                       	"svc": [
+                       		{
+                       			"port": "25928",
+                       			"url": "elb-healthcheck"
+                       			"threshold": 4,
+                         		}
+                       		]
+                }
+                ],
+
+
+                       "fk-ad-data-report-api": [
+                {
+
+                       	"fk-ad-data-report-api": [
+                       		{
+                       			"port": "25934",
+                       			"url": "elb-healthcheck"
+                       			"threshold": 3,
+                         		}
+                       		]
+                }
+                ],
+
+                      "fk-ad-data-schema-repo": [
+                                {
+
+                          "svc": [
+                               {
+                                  "port": "25931",
+                                   "url": "elb-healthcheck"
+                                   "threshold": 1,
+                                }
+                                ]
+                }
+                ],
+
+                     "sherlock-app-ads": [
+                                {
+
+                          "ads-grp": [
+                                {
+                                    "port": "25280",
+                                    "url": "elb-healthcheck"
+                                    "threshold": 4,
+                                   }
+                                ]
+                }
+                ],
+                            "prod-ad-pricing": [
+                                {
+                                    "plutussvc": [
+                                        {
+                                            "port": "25920",
+                                            "url": "elb-healthcheck",
+                                            "threshold": 2,
+                                        }
+                                    ],
+                                    "mapsvc": [
+                                        {
+                                            "port": "25937",
+                                            "url": "elb-healthcheck",
+                                            "threshold": 1,
+                                        }
+                                    ]
+                                }
+                            ]
+
+
+
+    }
+    ]
+}

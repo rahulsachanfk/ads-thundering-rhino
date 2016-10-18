@@ -1,0 +1,27 @@
+[template]
+prefix="fk-ad-thundering-rhino-configuration"
+src = "fk-ad-thundering-rhino-configuration.tmpl"
+dest = "/etc/fk-ad-thundering-rhino/services-api.yml"
+keys = [
+    "/cam_db_password",
+    "/cam_db_url",
+    "/cam_db_username",
+    "/externalAPIBaseURL",
+    "/monitoring_db_password",
+    "/monitoring_db_url",
+    "/monitoring_db_username",
+    "/redisHost",
+    "/redisPort",
+    "/report_db_password",
+    "/report_db_url",
+    "/report_db_username",
+    "/any_db_password",
+    "/any_db_url",
+    "/any_db_username",
+    "/npsProductVipURL",
+    "/madi_db_password",
+    "/madi_db_url",
+    "/madi_db_username"
+
+]
+

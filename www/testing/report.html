@@ -1,0 +1,27 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body>
+<form>
+    <a href="reports/consumed_campaign_greterthen_80.csv" target="_blank">Download 80% Campaign Consumption Report</a>
+    <br><br>
+    <a href="" target="_blank" id="daily_con_report">Download Daily Campaign Consumption Report(Unadjusted Consumption)</a>
+    <br><br>
+    <a href="" target="_blank" id="mec_report">Download MEC Report</a>
+</form>
+</body>
+</html>
+
+<script type="application/javascript">
+    $(document).ready(function() { console.log("ready");
+        var monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+        var d = new Date();
+        var today = d.getFullYear()+"-"+ (d.getMonth()<10 ? '0' : '')+(d.getMonth()+1) +"-"+ d.getDate();
+        var EecreportLink = "reports/MEC_"+ monthNames[d.getMonth()] +"_report.csv";
+        var DailyreportLink = "reports/Daily_campaign_consumption_" +today +".csv";
+        $("#mec_report").attr("href", EecreportLink);
+        $("#daily_con_report").attr("href",DailyreportLink);
+    });
+</script>

@@ -1,0 +1,35 @@
+html, body {
+  width: 90%;
+  height: 90%;
+  margin: auto;
+}
+
+body {
+  background-color: #284254;
+  color: #EDF8FF;
+
+  font-family: 'Lucida Sans Unicode', 'Arial', sans-serif;
+  font-size: 14px;
+}
+
+div.card {
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
+  width: 300px;
+}
+
+div.card div.heading {
+  font-weight: bold;
+  background-color: #EDF8FF;
+  color: #284254;
+  border-bottom: 1px solid #C0C9CF;
+
+  padding: 4px;
+}
+
+div.card div {
+  padding: 4px;
+  background-color: #EDF8FF;
+  color: #284254;
+}

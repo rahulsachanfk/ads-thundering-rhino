@@ -1,0 +1,25 @@
+#!/bin/bash
+
+export PAC=_PACKAGE_
+export USER=_USER_
+export ENV=_ENV_
+
+DATE_SUFFIX="_$(date +'%y-%m-%d-%H-%M')"
+JMX_PORT=25918
+MEMORY_LIMIT="1g"
+
+export JMX_OPT="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=${JMX_PORT} -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+
+export MEM_OPT="-Xmx${MEMORY_LIMIT} -Xms${MEMORY_LIMIT}"
+export JFR_OPT="-XX:+UnlockCommercialFeatures -XX:+FlightRecorder"
+export DEBUG_OPT="-XX:ErrorFile=/tmp/hs_err_pid_${PAC}${DATE_SUFFIX}.log -XX:HeapDumpPath=/tmp/java_pid_${PAC}${DATE_SUFFIX}.hprof -XX:-HeapDumpOnOutOfMemoryError -Xloggc:/var/log/flipkart/ads/${PAC}/gc${DATE_SUFFIX}.log -XX:+PrintGCDetails"
+
+export JAVA_HOME=/usr/lib/jvm/j2sdk1.8-oracle
+export JAVA_BIN=${JAVA_HOME}/bin/java
+export SERVER_PATH=/usr/share/fk-ad-thundering-rhino/www
+CLASSPATH=/usr/share/${PAC}/lib/thundering-rhino-services-0.1.jar
+MAIN=com.flipkart.flap.thunderingrhino.ServicesApplication
+CFG_FILE="/etc/$PAC/services-api.yml"
+
+
+
